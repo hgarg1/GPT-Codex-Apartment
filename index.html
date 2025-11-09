@@ -27,7 +27,7 @@
                 <li><a href="#neighborhood">Neighborhood</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <a class="cta-primary" href="#contact">Book a Tour</a>
+            <button class="cta-primary booking-trigger" data-flow="tour" type="button">Book a Tour</button>
         </nav>
     </header>
 
@@ -116,7 +116,7 @@
                         <li>Integrated workstation &amp; smart storage</li>
                         <li>Eastern exposure with sunrise views</li>
                     </ul>
-                    <button class="suite-cta">Reserve Consultation</button>
+                    <button class="suite-cta booking-trigger" data-flow="consultation" data-residence="Residence S4 – Skyline Studio" type="button">Reserve Consultation</button>
                 </article>
                 <article class="suite" data-bedrooms="one" data-animate>
                     <div class="suite-header">
@@ -129,7 +129,7 @@
                         <li>Chef's kitchen with quartz waterfall island</li>
                         <li>Custom motorized shades</li>
                     </ul>
-                    <button class="suite-cta">Schedule Tour</button>
+                    <button class="suite-cta booking-trigger" data-flow="tour" data-residence="Residence 11B – Corner One Bedroom" type="button">Schedule Tour</button>
                 </article>
                 <article class="suite" data-bedrooms="two" data-animate>
                     <div class="suite-header">
@@ -142,7 +142,7 @@
                         <li>Ensuite bathrooms with radiant floors</li>
                         <li>Dedicated laundry &amp; mudroom</li>
                     </ul>
-                    <button class="suite-cta">Join Waitlist</button>
+                    <button class="suite-cta booking-trigger" data-flow="waitlist" data-residence="Residence 20C – Two Bedroom Retreat" type="button">Join Waitlist</button>
                 </article>
                 <article class="suite" data-bedrooms="penthouse" data-animate>
                     <div class="suite-header">
@@ -155,7 +155,7 @@
                         <li>Bespoke wine wall &amp; catering kitchen</li>
                         <li>360° panoramic city &amp; river views</li>
                     </ul>
-                    <button class="suite-cta">Request Private Showing</button>
+                    <button class="suite-cta booking-trigger" data-flow="private" data-residence="Penthouse P3 – Private Sky Villa" type="button">Request Private Showing</button>
                 </article>
             </div>
         </section>
@@ -351,6 +351,136 @@
     </footer>
 
     <button class="back-to-top" aria-label="Back to top">↑</button>
+
+    <div id="bookingModal" class="booking-modal" role="dialog" aria-modal="true" aria-labelledby="bookingTitle" aria-hidden="true">
+        <div class="booking-modal__dialog" role="document">
+            <button class="booking-modal__close" type="button" aria-label="Close booking flow">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <header class="booking-modal__header">
+                <p class="booking-flow-label" id="bookingFlowLabel">Private Tour</p>
+                <h2 class="booking-modal__title" id="bookingTitle">Book a Private Tour</h2>
+                <p class="booking-modal__subtitle" id="bookingSubtitle">Select a residence focus and time so our concierge team can prepare a bespoke experience.</p>
+                <div class="booking-progress" aria-hidden="true">
+                    <div class="booking-progress__bar"></div>
+                </div>
+            </header>
+            <form id="bookingForm" class="booking-form" novalidate>
+                <div class="booking-step" data-step="0">
+                    <h3 class="booking-step__title">Which residence best fits your lifestyle?</h3>
+                    <p class="booking-step__description" id="bookingStepOneCopy">Select a focus to help us tailor floor plans and views.</p>
+                    <div class="booking-option-grid" role="group" aria-labelledby="bookingStepOneCopy">
+                        <label class="booking-option">
+                            <input type="radio" name="residencePreference" value="Studio Residences" required>
+                            <span class="booking-option__title">Studios</span>
+                            <span class="booking-option__desc">Bright micro-homes with skyline panoramas.</span>
+                        </label>
+                        <label class="booking-option">
+                            <input type="radio" name="residencePreference" value="One Bedroom Residences" required>
+                            <span class="booking-option__title">One Bedroom</span>
+                            <span class="booking-option__desc">Corner sanctuaries with winter gardens.</span>
+                        </label>
+                        <label class="booking-option">
+                            <input type="radio" name="residencePreference" value="Two Bedroom Residences" required>
+                            <span class="booking-option__title">Two Bedroom</span>
+                            <span class="booking-option__desc">Expansive layouts for entertaining.</span>
+                        </label>
+                        <label class="booking-option">
+                            <input type="radio" name="residencePreference" value="Penthouse Collection" required>
+                            <span class="booking-option__title">Penthouses</span>
+                            <span class="booking-option__desc">Sky villas with private terraces.</span>
+                        </label>
+                        <label class="booking-option">
+                            <input type="radio" name="residencePreference" value="Open to Options" required>
+                            <span class="booking-option__title">Open to Options</span>
+                            <span class="booking-option__desc">Match me with the ideal residence.</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="residenceNotes">Specific residence or requests</label>
+                        <input type="text" id="residenceNotes" name="residenceNotes" placeholder="e.g., Residence 20C – terrace home" aria-describedby="residenceNotesHint">
+                        <small id="residenceNotesHint" class="form-hint">We'll highlight these details throughout your experience.</small>
+                    </div>
+                </div>
+                <div class="booking-step" data-step="1" hidden>
+                    <h3 class="booking-step__title" id="bookingStepTwoTitle">Select your tour preferences</h3>
+                    <p class="booking-step__description" id="bookingStepTwoCopy">Choose how and when you'd like to experience Codex Residences.</p>
+                    <div class="booking-chip-group" data-field="tourType" role="group" aria-label="Tour format">
+                        <label class="booking-chip">
+                            <input type="radio" name="tourType" value="In-person Tour" required>
+                            <span>In-person</span>
+                        </label>
+                        <label class="booking-chip">
+                            <input type="radio" name="tourType" value="Virtual Preview" required>
+                            <span>Virtual</span>
+                        </label>
+                        <label class="booking-chip">
+                            <input type="radio" name="tourType" value="Hybrid Experience" required>
+                            <span>Hybrid</span>
+                        </label>
+                    </div>
+                    <div class="form-group" data-field="date">
+                        <label for="experienceDate" id="experienceDateLabel">Preferred tour date</label>
+                        <input type="date" id="experienceDate" name="experienceDate" required>
+                    </div>
+                    <div class="form-group" data-field="time">
+                        <label for="experienceTime" id="experienceTimeLabel">Preferred time</label>
+                        <input type="time" id="experienceTime" name="experienceTime" required>
+                    </div>
+                    <div class="form-group" data-field="guests">
+                        <label for="guestCount">Approximate guest count</label>
+                        <select id="guestCount" name="guestCount">
+                            <option value="Solo">Just me</option>
+                            <option value="Two">Two guests</option>
+                            <option value="Three to Four">Three to four guests</option>
+                            <option value="Group Showing">Group showing</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="booking-step" data-step="2" hidden>
+                    <h3 class="booking-step__title">How can we reach you?</h3>
+                    <p class="booking-step__description">Share the best details so our concierge can confirm your experience.</p>
+                    <div class="form-group">
+                        <label for="bookingName">Name</label>
+                        <input type="text" id="bookingName" name="bookingName" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingEmail">Email</label>
+                        <input type="email" id="bookingEmail" name="bookingEmail" placeholder="name@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingPhone">Phone (optional)</label>
+                        <input type="tel" id="bookingPhone" name="bookingPhone" placeholder="(212) 555-1234">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPreference">Preferred contact method</label>
+                        <select id="contactPreference" name="contactPreference">
+                            <option value="Email">Email</option>
+                            <option value="Phone">Phone</option>
+                            <option value="Text">Text message</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingNotes">Anything else we should prepare?</label>
+                        <textarea id="bookingNotes" name="bookingNotes" rows="3" placeholder="Tell us about timing, pets, or design preferences."></textarea>
+                    </div>
+                    <div class="booking-summary" id="bookingSummary" aria-live="polite"></div>
+                </div>
+                <footer class="booking-modal__footer">
+                    <button class="booking-nav booking-nav--back" type="button" data-action="prev">Back</button>
+                    <button class="booking-nav booking-nav--next" type="button" data-action="next">Next</button>
+                    <button class="booking-submit" type="submit" data-action="submit">Confirm Tour</button>
+                </footer>
+            </form>
+            <div id="bookingConfirmation" class="booking-confirmation" hidden>
+                <div class="booking-confirmation__icon" aria-hidden="true">✔</div>
+                <h3 id="bookingConfirmationTitle">You're all set!</h3>
+                <p id="bookingConfirmationCopy">Our concierge team will reach out shortly to finalize your experience.</p>
+                <div class="booking-confirmation__summary" id="bookingConfirmationSummary"></div>
+                <button class="booking-nav booking-nav--close" type="button">Close</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
