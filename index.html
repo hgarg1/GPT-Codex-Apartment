@@ -3,70 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="GPT Codex Apartment - A simple web application">
-    <title>GPT Codex Apartment</title>
+    <meta name="description" content="Codex Residences – Luxury apartments with modern amenities, curated lifestyle experiences, and inspired architecture.">
+    <title>Codex Residences | Elevated Apartment Living</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <h1>GPT Codex Apartment</h1>
+    <header class="site-header">
+        <nav class="nav">
+            <a class="logo" href="#home">Codex Residences</a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#highlights">Highlights</a></li>
+                <li><a href="#availability">Availability</a></li>
+                <li><a href="#amenities">Amenities</a></li>
+                <li><a href="#neighborhood">Neighborhood</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            <a class="cta-primary" href="#contact">Book a Tour</a>
         </nav>
     </header>
 
     <main>
         <section id="home" class="hero">
-            <h2>Welcome to GPT Codex Apartment</h2>
-            <p>A simple, clean, and modern web application.</p>
-            <button id="ctaButton" class="cta-button">Get Started</button>
+            <div class="hero-content">
+                <p class="hero-subtitle">Now Leasing – Summer 2025 Move-Ins</p>
+                <h1 class="hero-title">Luxury Boutique Apartments Where Design Meets Comfort</h1>
+                <p class="hero-description">Experience panoramic skyline views, concierge-curated amenities, and bespoke residences crafted for visionary city dwellers.</p>
+                <div class="hero-actions">
+                    <button id="ctaButton" class="cta-button">Explore Residences</button>
+                    <a class="cta-secondary" href="#gallery">View Gallery</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" data-target="34">0</span>
+                        <span class="stat-label">Unique Floor Plans</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" data-target="92">0</span>
+                        <span class="stat-label">Boutique Residences</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" data-target="5">0</span>
+                        <span class="stat-label">Star Amenities</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-card" aria-label="Residences preview">
+                <div class="hero-card__badge">Penthouse Collection</div>
+                <h2>Sunlit living, sculpted skyline.</h2>
+                <p>Residences designed with floor-to-ceiling glazing, private terraces, and refined finishes.</p>
+                <ul>
+                    <li>European-inspired kitchens</li>
+                    <li>Dedicated wellness studio</li>
+                    <li>Automated smart home controls</li>
+                </ul>
+                <a class="hero-card__link" href="#availability">View availability →</a>
+            </div>
         </section>
 
-        <section id="about" class="content-section">
-            <h2>About</h2>
-            <div class="card-container">
-                <div class="card">
-                    <h3>Feature 1</h3>
-                    <p>Clean and modern design with responsive layout.</p>
+        <section id="highlights" class="section">
+            <div class="section-header" data-animate>
+                <p class="eyebrow">Signature Features</p>
+                <h2 class="section-title">Why Residents Choose Codex</h2>
+                <p class="section-text">From inspired architecture to thoughtful services, every detail supports an elevated lifestyle in the heart of the city.</p>
+            </div>
+            <div class="highlight-grid">
+                <article class="highlight-card" data-animate>
+                    <h3>Iconic Architecture</h3>
+                    <p>Designed by award-winning studio Atelier Verve, the building exterior presents a sculptural silhouette that reflects the sunrise every morning.</p>
+                </article>
+                <article class="highlight-card" data-animate>
+                    <h3>Hospitality-Level Service</h3>
+                    <p>24/7 concierge, private valet, and on-demand housekeeping ensure your home is always guest-ready.</p>
+                </article>
+                <article class="highlight-card" data-animate>
+                    <h3>Smart Sustainability</h3>
+                    <p>Geo-thermal heating, solar integration, and rainwater capture reduce our environmental footprint without sacrificing comfort.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="availability" class="section section--accent">
+            <div class="section-header" data-animate>
+                <p class="eyebrow">Available Residences</p>
+                <h2 class="section-title">Find the Perfect Layout</h2>
+                <p class="section-text">Curated homes tailored to your lifestyle. Explore residences by bedroom count, outdoor space, or skyline exposure.</p>
+            </div>
+            <div class="filter-bar" data-animate>
+                <button class="filter-button active" data-filter="all">All Residences</button>
+                <button class="filter-button" data-filter="studio">Studios</button>
+                <button class="filter-button" data-filter="one">1 Bedroom</button>
+                <button class="filter-button" data-filter="two">2 Bedroom</button>
+                <button class="filter-button" data-filter="penthouse">Penthouses</button>
+            </div>
+            <div class="availability-grid">
+                <article class="suite" data-bedrooms="studio" data-animate>
+                    <div class="suite-header">
+                        <h3>Residence S4 – Skyline Studio</h3>
+                        <span class="availability-badge">New Release</span>
+                    </div>
+                    <p class="suite-price">From $2,450/mo</p>
+                    <ul class="suite-details">
+                        <li>520 sq ft with Juliet balcony</li>
+                        <li>Integrated workstation &amp; smart storage</li>
+                        <li>Eastern exposure with sunrise views</li>
+                    </ul>
+                    <button class="suite-cta">Reserve Consultation</button>
+                </article>
+                <article class="suite" data-bedrooms="one" data-animate>
+                    <div class="suite-header">
+                        <h3>Residence 11B – Corner One Bedroom</h3>
+                        <span class="availability-badge availability-badge--limited">Limited</span>
+                    </div>
+                    <p class="suite-price">From $3,375/mo</p>
+                    <ul class="suite-details">
+                        <li>780 sq ft with winter garden</li>
+                        <li>Chef's kitchen with quartz waterfall island</li>
+                        <li>Custom motorized shades</li>
+                    </ul>
+                    <button class="suite-cta">Schedule Tour</button>
+                </article>
+                <article class="suite" data-bedrooms="two" data-animate>
+                    <div class="suite-header">
+                        <h3>Residence 20C – Two Bedroom Retreat</h3>
+                        <span class="availability-badge">Available</span>
+                    </div>
+                    <p class="suite-price">From $4,950/mo</p>
+                    <ul class="suite-details">
+                        <li>1,180 sq ft with wraparound terrace</li>
+                        <li>Ensuite bathrooms with radiant floors</li>
+                        <li>Dedicated laundry &amp; mudroom</li>
+                    </ul>
+                    <button class="suite-cta">Join Waitlist</button>
+                </article>
+                <article class="suite" data-bedrooms="penthouse" data-animate>
+                    <div class="suite-header">
+                        <h3>Penthouse P3 – Private Sky Villa</h3>
+                        <span class="availability-badge availability-badge--premium">Signature</span>
+                    </div>
+                    <p class="suite-price">From $12,800/mo</p>
+                    <ul class="suite-details">
+                        <li>2,450 sq ft with rooftop solarium</li>
+                        <li>Bespoke wine wall &amp; catering kitchen</li>
+                        <li>360° panoramic city &amp; river views</li>
+                    </ul>
+                    <button class="suite-cta">Request Private Showing</button>
+                </article>
+            </div>
+        </section>
+
+        <section id="amenities" class="section">
+            <div class="section-header" data-animate>
+                <p class="eyebrow">Elevated Amenities</p>
+                <h2 class="section-title">A Resort-Inspired Lifestyle, Every Day</h2>
+                <p class="section-text">Curated spaces that extend your home. Crafted for wellness, productivity, and connection.</p>
+            </div>
+            <div class="amenities-grid">
+                <div class="amenity" data-animate>
+                    <span class="amenity-icon">💧</span>
+                    <h3>Skyline Pool Club</h3>
+                    <p>Infinity-edge pool with cabanas, cocktail service, and sunset cinema nights.</p>
                 </div>
-                <div class="card">
-                    <h3>Feature 2</h3>
-                    <p>Simple JavaScript interactions for better user experience.</p>
+                <div class="amenity" data-animate>
+                    <span class="amenity-icon">🧘‍♀️</span>
+                    <h3>Holistic Wellness Studio</h3>
+                    <p>Dedicated yoga, Pilates reformers, and recovery lounge with guided meditation pods.</p>
                 </div>
-                <div class="card">
-                    <h3>Feature 3</h3>
-                    <p>Well-structured HTML and organized CSS styling.</p>
+                <div class="amenity" data-animate>
+                    <span class="amenity-icon">🌿</span>
+                    <h3>Biophilic Conservatory</h3>
+                    <p>Indoor botanical garden with co-working alcoves bathed in natural light.</p>
+                </div>
+                <div class="amenity" data-animate>
+                    <span class="amenity-icon">🎬</span>
+                    <h3>Private Screening Salon</h3>
+                    <p>Curated film nights and multimedia lounge with Dolby Atmos immersion.</p>
+                </div>
+                <div class="amenity" data-animate>
+                    <span class="amenity-icon">🍽️</span>
+                    <h3>Chef's Collaboration Kitchen</h3>
+                    <p>Host intimate dinners with guest chefs and sommelier-guided tastings.</p>
+                </div>
+                <div class="amenity" data-animate>
+                    <span class="amenity-icon">🐾</span>
+                    <h3>Pet Retreat &amp; Spa</h3>
+                    <p>Dog run, grooming suites, and concierge-organized neighborhood adventures.</p>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="content-section">
-            <h2>Contact</h2>
-            <form id="contactForm" class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
+        <section id="floorplans" class="section section--dark">
+            <div class="section-header" data-animate>
+                <p class="eyebrow">Floor Plans</p>
+                <h2 class="section-title">Visualize Your Future Home</h2>
+                <p class="section-text">Select a residence to reveal curated layouts, square footage, and signature finishes.</p>
+            </div>
+            <div class="floorplan-wrapper" data-animate>
+                <div class="floorplan-selector">
+                    <button class="floorplan-button active" data-plan="aurora">Aurora Studio</button>
+                    <button class="floorplan-button" data-plan="lumen">Lumen One Bedroom</button>
+                    <button class="floorplan-button" data-plan="horizon">Horizon Two Bedroom</button>
+                    <button class="floorplan-button" data-plan="zenith">Zenith Penthouse</button>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                <div class="floorplan-display">
+                    <div class="floorplan-image" role="img" aria-label="Floor plan rendering"></div>
+                    <div class="floorplan-details">
+                        <h3 class="floorplan-title">Aurora Studio</h3>
+                        <p class="floorplan-size">520 sq ft • Skyline Studio</p>
+                        <ul class="floorplan-list">
+                            <li>Sun-drenched living with integrated workspace alcove</li>
+                            <li>Italian cabinetry with smart appliance suite</li>
+                            <li>Spa shower featuring digital temperature presets</li>
+                        </ul>
+                        <a class="floorplan-link" href="#contact">Request designer consultation →</a>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+        </section>
+
+        <section id="gallery" class="section">
+            <div class="section-header" data-animate>
+                <p class="eyebrow">Inspiration Gallery</p>
+                <h2 class="section-title">A Glimpse Inside Codex Residences</h2>
+                <p class="section-text">Browse curated imagery capturing the light, texture, and atmosphere that defines our community.</p>
+            </div>
+            <div class="gallery-grid" data-animate>
+                <figure class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1000&q=80');"></figure>
+                <figure class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=1000&q=80');"></figure>
+                <figure class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1000&q=80');"></figure>
+                <figure class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1000&q=80');"></figure>
+                <figure class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=80');"></figure>
+                <figure class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1522708323590-ff0c0d31f9ef?auto=format&fit=crop&w=1000&q=80');"></figure>
+            </div>
+        </section>
+
+        <section id="testimonials" class="section section--accent">
+            <div class="section-header" data-animate>
+                <p class="eyebrow">Resident Stories</p>
+                <h2 class="section-title">Hear from Our Community</h2>
+                <p class="section-text">Thoughtfully crafted homes deserve thoughtful praise. Discover how Codex elevates daily life.</p>
+            </div>
+            <div class="testimonial-grid">
+                <article class="testimonial" data-animate>
+                    <p class="testimonial-quote">“Every detail of my home feels intentional, from the soft-close cabinetry to the curated resident events. Codex has spoiled me for any other community.”</p>
+                    <p class="testimonial-author">— Maya L., Product Designer</p>
+                </article>
+                <article class="testimonial" data-animate>
+                    <p class="testimonial-quote">“The concierge team anticipates my schedule before I do. Having wellness amenities, coworking, and fine dining steps away is transformative.”</p>
+                    <p class="testimonial-author">— Julian S., Venture Partner</p>
+                </article>
+                <article class="testimonial" data-animate>
+                    <p class="testimonial-quote">“Hosting friends on the rooftop solarium while the sun sets over the skyline is an experience that never gets old. Codex is truly a lifestyle upgrade.”</p>
+                    <p class="testimonial-author">— Renée C., Creative Director</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="neighborhood" class="section">
+            <div class="section-header" data-animate>
+                <p class="eyebrow">The Neighborhood</p>
+                <h2 class="section-title">In the Heart of the Cultural District</h2>
+                <p class="section-text">Live steps from Michelin-star restaurants, boutique galleries, and expansive riverfront parks while remaining minutes from the central business core.</p>
+            </div>
+            <div class="neighborhood-grid" data-animate>
+                <div class="neighborhood-highlights">
+                    <div class="neighborhood-card">
+                        <h3>Minutes Away</h3>
+                        <ul>
+                            <li>1 min walk to Riverside Promenade</li>
+                            <li>3 min to Metro Line 2</li>
+                            <li>5 min to ArtHaus Museum</li>
+                            <li>8 min to Culinary Row</li>
+                        </ul>
+                    </div>
+                    <div class="neighborhood-card">
+                        <h3>Concierge Picks</h3>
+                        <ul>
+                            <li>Morning espresso at Atelier Café</li>
+                            <li>Weekend yoga in Lumière Park</li>
+                            <li>Late-night jazz at The Velvet Note</li>
+                            <li>Farmers market every Saturday</li>
+                        </ul>
+                    </div>
                 </div>
-                <button type="submit" class="submit-button">Send Message</button>
-            </form>
+                <div class="neighborhood-map" aria-label="Map of Codex Residences neighborhood">
+                    <iframe title="Codex Residences Neighborhood" src="https://www.openstreetmap.org/export/embed.html?bbox=-74.01%2C40.70%2C-73.98%2C40.73&amp;layer=mapnik" loading="lazy"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section contact-section">
+            <div class="contact-wrapper" data-animate>
+                <div class="contact-info">
+                    <p class="eyebrow">Connect With Us</p>
+                    <h2 class="section-title">Reserve Your Private Showing</h2>
+                    <p class="section-text">Our leasing atelier is ready to craft a bespoke tour aligned with your schedule. We respond within one business day.</p>
+                    <div class="contact-details">
+                        <p><strong>Leasing Atelier</strong><br> 512 Skyline Avenue, Suite 21<br> Metropolis, NY 10007</p>
+                        <p><strong>Call</strong> <a href="tel:+12125551234">(212) 555-1234</a><br><strong>Email</strong> <a href="mailto:hello@codexresidences.com">hello@codexresidences.com</a></p>
+                        <p><strong>Hours</strong> Mon–Sat 9am – 7pm</p>
+                    </div>
+                </div>
+                <form id="contactForm" class="contact-form" novalidate>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="name@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                    </div>
+                    <div class="form-group">
+                        <label for="moveIn">Preferred Move-In</label>
+                        <input type="month" id="moveIn" name="moveIn">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Tell us about your ideal home</label>
+                        <textarea id="message" name="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Send Inquiry</button>
+                    <p class="form-footnote">By submitting, you agree to be contacted by Codex Residences regarding leasing opportunities.</p>
+                </form>
+            </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2025 GPT Codex Apartment. All rights reserved.</p>
+    <footer class="site-footer">
+        <div class="footer-brand">Codex Residences</div>
+        <div class="footer-links">
+            <a href="#privacy">Privacy</a>
+            <a href="#legal">Legal</a>
+            <a href="#residents">Resident Portal</a>
+        </div>
+        <p class="footer-copy">&copy; 2025 Codex Residences. Crafted with intention for elevated city living.</p>
     </footer>
+
+    <button class="back-to-top" aria-label="Back to top">↑</button>
 
     <script src="script.js"></script>
 </body>
