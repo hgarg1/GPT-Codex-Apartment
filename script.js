@@ -19,6 +19,897 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryNext = galleryModal ? galleryModal.querySelector('[data-gallery-next]') : null;
     const galleryCloseButtons = galleryModal ? galleryModal.querySelectorAll('[data-gallery-close]') : [];
     const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+    const portfolioGrid = document.getElementById('portfolioGrid');
+    const portfolioCount = document.getElementById('portfolioCount');
+    const portfolioFilters = document.querySelectorAll('.portfolio-filter');
+    const leasingGrid = document.getElementById('leasingGrid');
+    const leaseFilters = document.querySelectorAll('.lease-filter');
+    const leaseSortSelect = document.getElementById('leaseSort');
+    const leaseModal = document.getElementById('leaseModal');
+    const leaseForm = document.getElementById('leaseForm');
+    const accountStatus = document.getElementById('accountStatus');
+    const accountDetails = document.getElementById('accountDetails');
+    const accountName = document.getElementById('accountName');
+    const accountEmail = document.getElementById('accountEmail');
+    const accountProperties = document.getElementById('accountProperties');
+    const accountReset = document.getElementById('accountReset');
+    let openLeaseApplication = () => {};
+
+    const formatCurrency = (value) => {
+        try {
+            return new Intl.NumberFormat(undefined, {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0
+            }).format(value);
+        } catch (error) {
+            console.warn('Unable to format currency', error);
+            return `$${value}`;
+        }
+    };
+
+    const formatFullDate = (value) => {
+        if (!value) return "";
+        try {
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return value;
+            return date.toLocaleDateString(undefined, {
+                month: "long",
+                day: "numeric",
+                year: "numeric"
+            });
+        } catch (error) {
+            console.warn('Unable to format date', error);
+            return value;
+        }
+    };
+
+    const portfolioResidences = [
+        {
+            id: "portfolio-hudson",
+            name: "Codex Hudson Atelier",
+            city: "New York, USA",
+            signature: "skyline",
+            signatureLabel: "Skyline",
+            bedrooms: "Studios – 3 Bedrooms",
+            size: "520 – 1,980",
+            description: "Glass-clad residences hovering over the Hudson River with bespoke art installations and private winter gardens.",
+            image: "https://images.unsplash.com/photo-1444419988131-046ed4e5ffd6?auto=format&fit=crop&w=1400&q=80"
+        },
+        {
+            id: "portfolio-london",
+            name: "Atelier Codex Mayfair",
+            city: "London, UK",
+            signature: "heritage",
+            signatureLabel: "Heritage",
+            bedrooms: "1 – 4 Bedrooms",
+            size: "690 – 2,400",
+            description: "Historic Georgian facades conceal modern sanctuaries curated with museum-quality lighting and private clubs.",
+            image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80"
+        },
+        {
+            id: "portfolio-dubai",
+            name: "Codex Marina Horizon",
+            city: "Dubai, UAE",
+            signature: "resort",
+            signatureLabel: "Resort",
+            bedrooms: "2 – 5 Bedrooms",
+            size: "1,450 – 3,800",
+            description: "Private marina berths, floating lounges, and sunset terraces define this desert waterfront icon.",
+            image: "https://images.unsplash.com/photo-1526481280695-3c4693f338aa?auto=format&fit=crop&w=1400&q=80"
+        },
+        {
+            id: "portfolio-singapore",
+            name: "Codex Botanica",
+            city: "Singapore",
+            signature: "wellness",
+            signatureLabel: "Wellness",
+            bedrooms: "Residences & Sky Villas",
+            size: "710 – 2,900",
+            description: "Vertical biophilic conservatories, restorative mineral pools, and sound baths in the clouds.",
+            image: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1400&q=80"
+        },
+        {
+            id: "portfolio-tokyo",
+            name: "Codex Lumina Shibuya",
+            city: "Tokyo, Japan",
+            signature: "skyline",
+            signatureLabel: "Skyline",
+            bedrooms: "Micro-Lofts – 2 Bedrooms",
+            size: "420 – 1,120",
+            description: "Kinetic facades with programmable lighting and tranquil meditation balconies above Shibuya Crossing.",
+            image: "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=1400&q=80"
+        },
+        {
+            id: "portfolio-mexico",
+            name: "Codex Riviera Residences",
+            city: "Riviera Maya, Mexico",
+            signature: "resort",
+            signatureLabel: "Resort",
+            bedrooms: "2 – 6 Bedrooms",
+            size: "1,650 – 4,200",
+            description: "Jungle-canopy villas with private cenote pools, curated spa rituals, and chef-partnered dining.",
+            image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1400&q=80"
+        },
+        {
+            id: "portfolio-sydney",
+            name: "Codex Harbour Atelier",
+            city: "Sydney, Australia",
+            signature: "skyline",
+            signatureLabel: "Skyline",
+            bedrooms: "1 – 3 Bedrooms",
+            size: "690 – 2,150",
+            description: "Glass atriums cantilever over the harbour with yacht butler service and curated coastal retreats.",
+            image: "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=1400&q=80"
+        },
+        {
+            id: "portfolio-zermatt",
+            name: "Codex Alpine Sanctuary",
+            city: "Zermatt, Switzerland",
+            signature: "resort",
+            signatureLabel: "Resort",
+            bedrooms: "Residences & Chalets",
+            size: "980 – 4,600",
+            description: "Ski-in residences with private funicular access, onsen suites, and sommeliers of the Alps.",
+            image: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1400&q=80"
+        }
+    ];
+
+    const leasingResidences = [
+        {
+            id: "lease-s4",
+            name: "Residence S4 — Skyline Studio",
+            type: "studio",
+            bedrooms: "Studio",
+            bathrooms: 1,
+            size: 520,
+            price: 2450,
+            deposit: 3500,
+            location: "Metropolis, NY",
+            signature: "sky",
+            signatureLabel: "Skyline",
+            status: "Immediate",
+            highlight: "Smart living layout with custom workstation and dawn-to-dusk lighting scenes.",
+            image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1400&q=80",
+            features: ["Juliet balcony overlooking the river", "Integrated storage wall with hidden bed", "Touchless entry with biometric access"]
+        },
+        {
+            id: "lease-11b",
+            name: "Residence 11B — Corner One Bedroom",
+            type: "one",
+            bedrooms: "1 Bedroom + Winter Garden",
+            bathrooms: 1.5,
+            size: 810,
+            price: 3375,
+            deposit: 4200,
+            location: "Metropolis, NY",
+            signature: "sky",
+            signatureLabel: "Skyline",
+            status: "30-Day Move-In",
+            highlight: "Dual exposure great room with retractable glass and curated lighting.",
+            image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80",
+            features: ["Chef's kitchen with quartz waterfall island", "Owner's suite with wardrobe atelier", "Integrated sound system throughout"]
+        },
+        {
+            id: "lease-16a",
+            name: "Residence 16A — Two Bedroom Atelier",
+            type: "two",
+            bedrooms: "2 Bedroom + Study",
+            bathrooms: 2,
+            size: 1280,
+            price: 5150,
+            deposit: 6200,
+            location: "Metropolis, NY",
+            signature: "wellness",
+            signatureLabel: "Wellness",
+            status: "Immediate",
+            highlight: "Wellness wing with infrared sauna and customizable aromatherapy.",
+            image: "https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=1400&q=80",
+            features: ["Wraparound terrace with herb garden planters", "Primary ensuite with soaking tub and steam shower", "Dedicated flex studio for fitness or office"]
+        },
+        {
+            id: "lease-21c",
+            name: "Residence 21C — Three Bedroom Gallery",
+            type: "three",
+            bedrooms: "3 Bedroom",
+            bathrooms: 3,
+            size: 1650,
+            price: 7450,
+            deposit: 9000,
+            location: "Metropolis, NY",
+            signature: "heritage",
+            signatureLabel: "Heritage",
+            status: "45-Day Move-In",
+            highlight: "Corner great room framed by gallery walls and winter garden lounge.",
+            image: "https://images.unsplash.com/photo-1522708323590-ff0c0d31f9ef?auto=format&fit=crop&w=1400&q=80",
+            features: ["Dining salon with seating for ten", "Private vestibule with custom millwork", "Dedicated wine room with Sommelier storage"]
+        },
+        {
+            id: "lease-28p",
+            name: "Penthouse 28P — Sky Villa",
+            type: "penthouse",
+            bedrooms: "3 Bedroom + Library",
+            bathrooms: 3.5,
+            size: 2540,
+            price: 14800,
+            deposit: 18000,
+            location: "Metropolis, NY",
+            signature: "sky",
+            signatureLabel: "Sky Collection",
+            status: "Private Release",
+            highlight: "Two-level solarium with infinity-edge plunge pool and private elevator.",
+            image: "https://images.unsplash.com/photo-1521783985994-96a3360ce2a0?auto=format&fit=crop&w=1400&q=80",
+            features: ["Panoramic rooftop terrace with outdoor kitchen", "Primary wing with dual dressing galleries", "In-residence wellness spa with cold plunge"]
+        },
+        {
+            id: "lease-08l",
+            name: "Residence 08L — Lofted Studio",
+            type: "studio",
+            bedrooms: "Studio + Loft",
+            bathrooms: 1,
+            size: 610,
+            price: 2895,
+            deposit: 3600,
+            location: "Metropolis, NY",
+            signature: "heritage",
+            signatureLabel: "Heritage",
+            status: "Immediate",
+            highlight: "Double-height ceilings with mezzanine sleep loft and reading library.",
+            image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1400&q=80",
+            features: ["Restored brickwork with integrated lighting", "Gourmet kitchen with brass fixtures", "Smart shades with voice control"]
+        },
+        {
+            id: "lease-19d",
+            name: "Residence 19D — Wellness Duplex",
+            type: "two",
+            bedrooms: "2 Bedroom Duplex",
+            bathrooms: 2.5,
+            size: 1420,
+            price: 5980,
+            deposit: 7200,
+            location: "Metropolis, NY",
+            signature: "wellness",
+            signatureLabel: "Wellness",
+            status: "Immediate",
+            highlight: "Two-story living with a private meditation terrace and hydrotherapy bath.",
+            image: "https://images.unsplash.com/photo-1526481280695-3c4693f338aa?auto=format&fit=crop&w=1400&q=80",
+            features: ["Floating staircase with sculptural lighting", "Residence automation via Codex App", "Heated stone flooring throughout"]
+        },
+        {
+            id: "lease-05g",
+            name: "Residence 05G — Garden Three Bedroom",
+            type: "three",
+            bedrooms: "3 Bedroom + Garden",
+            bathrooms: 2.5,
+            size: 1580,
+            price: 6890,
+            deposit: 8400,
+            location: "Metropolis, NY",
+            signature: "resort",
+            signatureLabel: "Resort",
+            status: "Immediate",
+            highlight: "Private terrace with plunge spa and outdoor kitchen for year-round entertaining.",
+            image: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=1400&q=80",
+            features: ["Outdoor living room with fire feature", "Indoor/outdoor audio integration", "Primary suite with terrace access"]
+        },
+        {
+            id: "lease-14f",
+            name: "Residence 14F — River View One Bedroom",
+            type: "one",
+            bedrooms: "1 Bedroom + Den",
+            bathrooms: 1.5,
+            size: 890,
+            price: 3625,
+            deposit: 4500,
+            location: "Metropolis, NY",
+            signature: "sky",
+            signatureLabel: "Skyline",
+            status: "Immediate",
+            highlight: "Riverfront den with built-in library and immersive soundscapes.",
+            image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1400&q=80",
+            features: ["Corner entertaining lounge with skyline vistas", "Integrated wine refrigeration", "Primary suite with spa shower"]
+        },
+        {
+            id: "lease-24e",
+            name: "Residence 24E — Signature Two Bedroom",
+            type: "two",
+            bedrooms: "2 Bedroom + Atelier",
+            bathrooms: 2.5,
+            size: 1490,
+            price: 6420,
+            deposit: 7800,
+            location: "Metropolis, NY",
+            signature: "heritage",
+            signatureLabel: "Heritage",
+            status: "30-Day Move-In",
+            highlight: "Grand salon with double-height library ladder and sculptural fireplace.",
+            image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=1400&q=80",
+            features: ["Custom millwork atelier for art or study", "Primary suite with dressing gallery", "Dedicated catering pantry"]
+        },
+        {
+            id: "lease-30p",
+            name: "Sky Residence 30P — Penthouse Duplex",
+            type: "penthouse",
+            bedrooms: "4 Bedroom Duplex",
+            bathrooms: 4.5,
+            size: 3120,
+            price: 18650,
+            deposit: 22500,
+            location: "Metropolis, NY",
+            signature: "sky",
+            signatureLabel: "Sky Collection",
+            status: "Private Release",
+            highlight: "Two-story glass observatory with private tasting lounge and infinity-edge spa.",
+            image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1400&q=80",
+            features: ["Double-height great room with floating fireplace", "Sky terrace with retractable canopy", "Private wellness suite with plunge pool"]
+        }
+    ];
+
+    if (portfolioGrid) {
+        let activePortfolioFilter = "all";
+
+        const renderPortfolio = (filter = "all") => {
+            activePortfolioFilter = filter;
+            const filtered = portfolioResidences.filter(item => filter === "all" || item.signature === filter);
+            if (portfolioCount) {
+                const label = filtered.length === 1 ? "1 residence" : `${filtered.length} residences`;
+                portfolioCount.textContent = label;
+            }
+
+            if (!filtered.length) {
+                portfolioGrid.innerHTML = "<p class=\"portfolio-empty\">No residences match this signature at the moment.</p>";
+                return;
+            }
+
+            portfolioGrid.innerHTML = filtered.map(item => `
+                <article class="portfolio-card" data-signature="${item.signature}">
+                    <div class="portfolio-card__media" style="background-image: url('${item.image}')" role="img" aria-label="${item.name}"></div>
+                    <div class="portfolio-card__content">
+                        <span class="portfolio-card__eyebrow">${item.city}</span>
+                        <h3 class="portfolio-card__title">${item.name}</h3>
+                        <p class="portfolio-card__description">${item.description}</p>
+                        <ul class="portfolio-card__meta">
+                            <li>${item.bedrooms}</li>
+                            <li>${item.size} sq ft avg.</li>
+                            <li>${item.signatureLabel} Signature</li>
+                        </ul>
+                    </div>
+                </article>
+            `).join("");
+        };
+
+        portfolioFilters.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.dataset.portfolioFilter || "all";
+                portfolioFilters.forEach(btn => btn.classList.toggle('active', btn === button));
+                renderPortfolio(filter);
+            });
+        });
+
+        renderPortfolio(activePortfolioFilter);
+    }
+
+    if (leasingGrid) {
+        let activeLeaseFilter = "all";
+
+        const applyLeaseFilter = (collection, filter) => {
+            if (filter === "all") return collection.slice();
+            return collection.filter(item => item.type === filter || item.signature === filter);
+        };
+
+        const sortLeases = (collection) => {
+            if (!leaseSortSelect) return collection;
+            const value = leaseSortSelect.value;
+            const sorted = collection.slice();
+            if (value === "priceAsc") {
+                sorted.sort((a, b) => a.price - b.price);
+            } else if (value === "priceDesc") {
+                sorted.sort((a, b) => b.price - a.price);
+            } else if (value === "sizeDesc") {
+                sorted.sort((a, b) => b.size - a.size);
+            }
+            return sorted;
+        };
+
+        const attachLeaseButtons = () => {
+            const leaseButtons = leasingGrid.querySelectorAll('.lease-cta');
+            leaseButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const propertyId = button.dataset.propertyId || "";
+                    openLeaseApplication(propertyId);
+                });
+            });
+        };
+
+        const renderLeasing = () => {
+            const filtered = applyLeaseFilter(leasingResidences, activeLeaseFilter);
+            const sorted = sortLeases(filtered);
+
+            if (!sorted.length) {
+                leasingGrid.innerHTML = "<p class=\"leasing-empty\">No residences match your filters. Adjust the filters to explore more options.</p>";
+                return;
+            }
+
+            leasingGrid.innerHTML = sorted.map(property => `
+                <article class="lease-card" data-type="${property.type}">
+                    <div class="lease-card__media" style="background-image: url('${property.image}')" role="img" aria-label="${property.name}"></div>
+                    <div class="lease-card__body">
+                        <div class="lease-card__header">
+                            <h3>${property.name}</h3>
+                            <span class="lease-card__badge lease-card__badge--${property.signature}">${property.signatureLabel}</span>
+                        </div>
+                        <p class="lease-card__location">${property.location}</p>
+                        <p class="lease-card__price">${formatCurrency(property.price)}/mo</p>
+                        <ul class="lease-card__meta">
+                            <li>${property.bedrooms}</li>
+                            <li>${property.size} sq ft</li>
+                            <li>${property.bathrooms} bath${property.bathrooms > 1 ? 's' : ''}</li>
+                        </ul>
+                        <p class="lease-card__highlight">${property.highlight}</p>
+                        <ul class="lease-card__features">
+                            ${property.features.map(feature => `<li>${feature}</li>`).join('')}
+                        </ul>
+                        <div class="lease-card__footer">
+                            <span class="lease-card__status">Status: ${property.status}</span>
+                            <button class="lease-cta" data-property-id="${property.id}" type="button">Apply to Lease</button>
+                        </div>
+                    </div>
+                </article>
+            `).join("");
+
+            attachLeaseButtons();
+        };
+
+        leaseFilters.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.dataset.leaseFilter || "all";
+                activeLeaseFilter = filter;
+                leaseFilters.forEach(btn => btn.classList.toggle('active', btn === button));
+                renderLeasing();
+            });
+        });
+
+        leaseSortSelect && leaseSortSelect.addEventListener('change', () => renderLeasing());
+
+        renderLeasing();
+    }
+
+    if (leaseModal && leaseForm) {
+        const leaseSteps = Array.from(leaseForm.querySelectorAll('.lease-step'));
+        const leaseProgressBar = leaseModal.querySelector('.lease-progress__bar');
+        const leaseNextButton = leaseModal.querySelector('[data-lease-action="next"]');
+        const leasePrevButton = leaseModal.querySelector('[data-lease-action="prev"]');
+        const leaseSubmitButton = leaseModal.querySelector('[data-lease-action="submit"]');
+        const leaseCloseButton = document.getElementById('leaseCloseButton');
+        const leaseModalClose = leaseModal.querySelector('.lease-modal__close');
+        const leaseConfirmation = document.getElementById('leaseConfirmation');
+        const leasePropertySummary = document.getElementById('leasePropertySummary');
+        const leaseModalEyebrow = document.getElementById('leaseModalEyebrow');
+        const leaseModalTitle = document.getElementById('leaseModalTitle');
+        const leaseModalSubtitle = document.getElementById('leaseModalSubtitle');
+        const paymentStatus = document.getElementById('paymentStatus');
+        const leaseConfirmationSummary = document.getElementById('leaseConfirmationSummary');
+        const leaseConfirmationTitle = document.getElementById('leaseConfirmationTitle');
+        const leaseConfirmationCopy = document.getElementById('leaseConfirmationCopy');
+        const accountEmailConfirm = document.getElementById('accountEmailConfirm');
+        const applicantEmailInput = document.getElementById('applicantEmail');
+        const cardNameInput = document.getElementById('cardName');
+        const cardNumberInput = document.getElementById('cardNumber');
+        const cardExpiryInput = document.getElementById('cardExpiry');
+        const cardCvcInput = document.getElementById('cardCvc');
+        const billingZipInput = document.getElementById('billingZip');
+        const moveInInput = document.getElementById('applicationMoveIn');
+
+        let leaseCurrentStep = 0;
+        let leaseActiveProperty = null;
+        let mockPaymentAuthorized = false;
+
+        const setDefaultMoveIn = () => {
+            if (!moveInInput) return;
+            const defaultDate = new Date();
+            defaultDate.setDate(defaultDate.getDate() + 30);
+            moveInInput.value = defaultDate.toISOString().split('T')[0];
+        };
+
+        const setLeaseStepVisibility = () => {
+            leaseSteps.forEach((step, index) => {
+                const isActive = index === leaseCurrentStep;
+                step.hidden = !isActive;
+                step.classList.toggle('is-hidden', !isActive);
+                step.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+            });
+
+            if (leasePrevButton) {
+                leasePrevButton.disabled = leaseCurrentStep === 0;
+                leasePrevButton.classList.toggle('is-hidden', leaseCurrentStep === 0);
+            }
+
+            if (leaseNextButton) {
+                leaseNextButton.classList.toggle('is-hidden', leaseCurrentStep === leaseSteps.length - 1);
+            }
+
+            if (leaseSubmitButton) {
+                leaseSubmitButton.classList.toggle('is-hidden', leaseCurrentStep !== leaseSteps.length - 1);
+            }
+
+            if (leaseProgressBar) {
+                const progress = ((leaseCurrentStep + 1) / leaseSteps.length) * 100;
+                leaseProgressBar.style.width = `${progress}%`;
+            }
+
+            if (leaseCurrentStep === leaseSteps.length - 1 && accountEmailConfirm && applicantEmailInput) {
+                accountEmailConfirm.value = applicantEmailInput.value.trim();
+            }
+        };
+
+        const resetLeaseForm = () => {
+            leaseForm.reset();
+            leaseCurrentStep = 0;
+            mockPaymentAuthorized = false;
+            if (paymentStatus) {
+                paymentStatus.textContent = '';
+                paymentStatus.classList.remove('is-success', 'is-error');
+            }
+            if (accountEmailConfirm) {
+                accountEmailConfirm.value = '';
+            }
+            leaseForm.classList.remove('is-hidden');
+            leaseForm.removeAttribute('hidden');
+            if (leaseConfirmation) {
+                leaseConfirmation.hidden = true;
+                leaseConfirmation.setAttribute('hidden', '');
+            }
+            setDefaultMoveIn();
+            setLeaseStepVisibility();
+        };
+
+        const closeLeaseModal = () => {
+            resetLeaseForm();
+            leaseActiveProperty = null;
+            leaseModal.classList.remove('open');
+            leaseModal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('modal-open');
+        };
+
+        const authorizeMockPayment = () => {
+            if (!paymentStatus) return true;
+            const number = (cardNumberInput?.value || '').replace(/\s+/g, '');
+            const expiry = (cardExpiryInput?.value || '').trim();
+            const cvc = (cardCvcInput?.value || '').trim();
+            const zip = (billingZipInput?.value || '').trim();
+            const cardName = (cardNameInput?.value || '').trim();
+
+            const errors = [];
+            if (!cardName) errors.push('Enter the name on the card.');
+            if (!/^\d{13,19}$/.test(number)) errors.push('Enter a valid card number.');
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)) errors.push('Expiration must be in MM/YY format.');
+            if (!/^\d{3,4}$/.test(cvc)) errors.push('CVC must be three or four digits.');
+            if (!/^\d{5,10}$/.test(zip)) errors.push('Enter a valid ZIP or postal code.');
+
+            if (errors.length) {
+                paymentStatus.textContent = errors[0];
+                paymentStatus.classList.remove('is-success');
+                paymentStatus.classList.add('is-error');
+                return false;
+            }
+
+            const depositText = formatCurrency(leaseActiveProperty ? leaseActiveProperty.deposit : 0);
+            paymentStatus.textContent = `Mock payment of ${depositText} authorized.`;
+            paymentStatus.classList.remove('is-error');
+            paymentStatus.classList.add('is-success');
+            mockPaymentAuthorized = true;
+            return true;
+        };
+
+        const validateLeaseStep = (stepIndex) => {
+            const stepEl = leaseSteps[stepIndex];
+            if (!stepEl) return true;
+            let valid = true;
+            const fields = stepEl.querySelectorAll('input, select, textarea');
+
+            fields.forEach(field => {
+                if (field.disabled || field.closest('[hidden]')) return;
+
+                if (field.type === 'checkbox') {
+                    if (!field.required) return;
+                    const wrapper = field.closest('.checkbox');
+                    if (!field.checked) {
+                        wrapper && wrapper.classList.add('field-error');
+                        field.classList.add('field-error');
+                        if (valid && typeof field.focus === 'function') {
+                            field.focus();
+                        }
+                        valid = false;
+                    } else {
+                        wrapper && wrapper.classList.remove('field-error');
+                        field.classList.remove('field-error');
+                    }
+                    return;
+                }
+
+                const value = field.value.trim();
+                if (field.required && !value) {
+                    field.classList.add('field-error');
+                    if (valid && typeof field.focus === 'function') {
+                        field.focus();
+                    }
+                    valid = false;
+                } else {
+                    field.classList.remove('field-error');
+                }
+            });
+
+            if (!valid) {
+                return false;
+            }
+
+            if (stepIndex === 3) {
+                return authorizeMockPayment();
+            }
+
+            if (stepIndex === 4) {
+                if (!mockPaymentAuthorized) {
+                    if (paymentStatus) {
+                        paymentStatus.textContent = 'Please authorize the mock deposit before creating your account.';
+                        paymentStatus.classList.add('is-error');
+                    }
+                    return false;
+                }
+                const password = leaseForm.querySelector('#accountPassword');
+                const confirm = leaseForm.querySelector('#accountPasswordConfirm');
+                if (password && confirm && password.value !== confirm.value) {
+                    confirm.classList.add('field-error');
+                    confirm.focus();
+                    return false;
+                }
+                confirm && confirm.classList.remove('field-error');
+            }
+
+            return true;
+        };
+
+        const buildConfirmationSummary = (formData) => {
+            if (!leaseActiveProperty) return '';
+            const moveIn = formData.get('applicationMoveIn');
+            const leaseTerm = formData.get('leaseTerm');
+            const applicantName = formData.get('applicantName');
+            const applicantEmail = formData.get('applicantEmail');
+            return `
+                <div class="lease-confirmation__section">
+                    <h4>Residence</h4>
+                    <p>${leaseActiveProperty.name}</p>
+                    <p>${leaseActiveProperty.location}</p>
+                </div>
+                <div class="lease-confirmation__section">
+                    <h4>Move-In</h4>
+                    <p>${moveIn ? formatFullDate(moveIn.toString()) : 'Pending'}</p>
+                    <p>${leaseTerm || ''}</p>
+                </div>
+                <div class="lease-confirmation__section">
+                    <h4>Mock Deposit</h4>
+                    <p>${formatCurrency(leaseActiveProperty.deposit)}</p>
+                    <p>Authorized</p>
+                </div>
+                <div class="lease-confirmation__section">
+                    <h4>Account</h4>
+                    <p>${applicantName || 'Codex Resident'}</p>
+                    <p>${applicantEmail || ''}</p>
+                </div>
+            `;
+        };
+
+        const completeLeaseApplication = () => {
+            if (!leaseActiveProperty) return;
+            const formData = new FormData(leaseForm);
+            const applicantName = (formData.get('applicantName') || '').toString().trim();
+            const applicantEmail = (formData.get('applicantEmail') || '').toString().trim();
+            const moveIn = (formData.get('applicationMoveIn') || '').toString();
+            const leaseTerm = (formData.get('leaseTerm') || '').toString();
+
+            const storedAccount = loadAccount();
+            const baseAccount = storedAccount && storedAccount.email === applicantEmail ? storedAccount : {
+                name: applicantName || 'Codex Resident',
+                email: applicantEmail,
+                properties: []
+            };
+
+            baseAccount.name = applicantName || baseAccount.name;
+            baseAccount.email = applicantEmail || baseAccount.email;
+            baseAccount.properties = baseAccount.properties || [];
+
+            const propertyRecord = {
+                id: leaseActiveProperty.id,
+                name: leaseActiveProperty.name,
+                location: leaseActiveProperty.location,
+                price: leaseActiveProperty.price,
+                moveIn,
+                leaseTerm,
+                image: leaseActiveProperty.image
+            };
+
+            const existingIndex = baseAccount.properties.findIndex(item => item.id === propertyRecord.id);
+            if (existingIndex >= 0) {
+                baseAccount.properties[existingIndex] = propertyRecord;
+            } else {
+                baseAccount.properties.push(propertyRecord);
+            }
+
+            saveAccount(baseAccount);
+            syncResidentPortal();
+
+            leaseForm.classList.add('is-hidden');
+            leaseForm.setAttribute('hidden', '');
+            if (leaseConfirmation) {
+                leaseConfirmation.hidden = false;
+                leaseConfirmation.removeAttribute('hidden');
+            }
+            if (leaseConfirmationSummary) {
+                leaseConfirmationSummary.innerHTML = buildConfirmationSummary(formData);
+            }
+            if (leaseConfirmationTitle) {
+                leaseConfirmationTitle.textContent = `Welcome to ${leaseActiveProperty.name}`;
+            }
+            if (leaseConfirmationCopy) {
+                leaseConfirmationCopy.textContent = 'Your application is complete. Our concierge team will reach out to finalize next steps within one business day.';
+            }
+        };
+
+        openLeaseApplication = (propertyId) => {
+            const property = leasingResidences.find(item => item.id === propertyId) || null;
+            if (!property) return;
+            leaseActiveProperty = property;
+            resetLeaseForm();
+
+            if (leaseModalEyebrow) {
+                leaseModalEyebrow.textContent = `${property.signatureLabel} • ${property.status}`;
+            }
+            if (leaseModalTitle) {
+                leaseModalTitle.textContent = property.name;
+            }
+            if (leaseModalSubtitle) {
+                const depositText = formatCurrency(property.deposit);
+                leaseModalSubtitle.textContent = `Secure this residence today with a refundable mock deposit of ${depositText}.`;
+            }
+            if (leasePropertySummary) {
+                const features = property.features.slice(0, 3).map(feature => `<li>${feature}</li>`).join('');
+                leasePropertySummary.innerHTML = `
+                    <div class="lease-property__media" style="background-image: url('${property.image}')" role="img" aria-label="${property.name}"></div>
+                    <div class="lease-property__content">
+                        <span class="lease-property__badge">${property.signatureLabel}</span>
+                        <h4>${property.name}</h4>
+                        <p class="lease-property__meta">${property.location} • ${property.bedrooms} • ${property.size} sq ft</p>
+                        <p class="lease-property__price">${formatCurrency(property.price)}/mo</p>
+                        <p class="lease-property__deposit">Refundable mock deposit: ${formatCurrency(property.deposit)}</p>
+                        <ul class="lease-property__list">${features}</ul>
+                    </div>
+                `;
+            }
+
+            leaseModal.setAttribute('aria-hidden', 'false');
+            leaseModal.classList.add('open');
+            document.body.classList.add('modal-open');
+
+            const firstField = leaseSteps[0]?.querySelector('input, select, textarea');
+            if (firstField && typeof firstField.focus === 'function') {
+                setTimeout(() => firstField.focus(), 120);
+            }
+        };
+
+        leaseNextButton && leaseNextButton.addEventListener('click', () => {
+            if (!validateLeaseStep(leaseCurrentStep)) return;
+            leaseCurrentStep = Math.min(leaseCurrentStep + 1, leaseSteps.length - 1);
+            setLeaseStepVisibility();
+        });
+
+        leasePrevButton && leasePrevButton.addEventListener('click', () => {
+            leaseCurrentStep = Math.max(leaseCurrentStep - 1, 0);
+            setLeaseStepVisibility();
+        });
+
+        leaseForm.addEventListener('submit', event => {
+            event.preventDefault();
+            if (!validateLeaseStep(leaseCurrentStep)) return;
+            completeLeaseApplication();
+        });
+
+        leaseModalClose && leaseModalClose.addEventListener('click', closeLeaseModal);
+        leaseCloseButton && leaseCloseButton.addEventListener('click', closeLeaseModal);
+
+        leaseModal.addEventListener('click', event => {
+            if (event.target === leaseModal) {
+                closeLeaseModal();
+            }
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && leaseModal.classList.contains('open')) {
+                closeLeaseModal();
+            }
+        });
+    }
+
+    const loadAccount = () => {
+        try {
+            const stored = localStorage.getItem('codexResidentAccount');
+            return stored ? JSON.parse(stored) : null;
+        } catch (error) {
+            console.warn('Unable to parse account data', error);
+            return null;
+        }
+    };
+
+    const saveAccount = (account) => {
+        try {
+            localStorage.setItem('codexResidentAccount', JSON.stringify(account));
+        } catch (error) {
+            console.warn('Unable to persist account data', error);
+        }
+    };
+
+    const renderAccountProperties = (properties = []) => {
+        if (!accountProperties) return;
+        if (!properties.length) {
+            accountProperties.innerHTML = '<p class="portal-empty">No residences have been added yet. Start an application to reserve your home.</p>';
+            return;
+        }
+
+        accountProperties.innerHTML = properties.map(property => `
+            <div class="portal-residence">
+                <div class="portal-residence__media" style="background-image: url('${property.image || ''}')" role="img" aria-label="${property.name}"></div>
+                <div class="portal-residence__body">
+                    <h4>${property.name}</h4>
+                    <p class="portal-residence__location">${property.location || 'Codex Residences'}</p>
+                    <ul class="portal-residence__meta">
+                        <li>${property.leaseTerm || '12 Month Lease'}</li>
+                        <li>${property.moveIn ? formatFullDate(property.moveIn) : 'Move-in pending'}</li>
+                        <li>${property.price ? formatCurrency(property.price) + '/mo' : ''}</li>
+                    </ul>
+                </div>
+            </div>
+        `).join('');
+    };
+
+    const syncResidentPortal = () => {
+        const account = loadAccount();
+        if (!accountStatus || !accountDetails || !accountName || !accountEmail) {
+            return;
+        }
+
+        if (!account) {
+            accountStatus.textContent = 'Create an account after your mock payment to unlock the resident experience.';
+            accountDetails.hidden = true;
+            accountDetails.setAttribute('hidden', '');
+            accountName.textContent = '—';
+            accountEmail.textContent = '—';
+            if (accountReset) {
+                accountReset.hidden = true;
+                accountReset.setAttribute('hidden', '');
+                accountReset.setAttribute('aria-hidden', 'true');
+            }
+            renderAccountProperties([]);
+            return;
+        }
+
+        const firstName = account.name ? account.name.split(' ')[0] : 'Resident';
+        accountStatus.textContent = `Welcome back, ${firstName}! Your Codex account is active.`;
+        accountDetails.hidden = false;
+        accountDetails.removeAttribute('hidden');
+        accountName.textContent = account.name || 'Codex Resident';
+        accountEmail.textContent = account.email || '';
+        if (accountReset) {
+            accountReset.hidden = false;
+            accountReset.removeAttribute('hidden');
+            accountReset.setAttribute('aria-hidden', 'false');
+        }
+        renderAccountProperties(account.properties || []);
+    };
+
+    accountReset && accountReset.addEventListener('click', () => {
+        localStorage.removeItem('codexResidentAccount');
+        syncResidentPortal();
+    });
+
+    syncResidentPortal();
 
     // Handle sticky header appearance and back-to-top visibility
     const handleScrollState = () => {

@@ -23,10 +23,13 @@
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#highlights">Highlights</a></li>
                 <li><a href="#availability">Availability</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#leasing">Lease</a></li>
                 <li><a href="#amenities">Amenities</a></li>
                 <li><a href="#team">Team</a></li>
                 <li><a href="#neighborhood">Neighborhood</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="#residents">Resident Portal</a></li>
             </ul>
             <button class="cta-primary booking-trigger" data-flow="tour" type="button">Book a Tour</button>
         </nav>
@@ -159,6 +162,66 @@
                     <button class="suite-cta booking-trigger" data-flow="private" data-residence="Penthouse P3 – Private Sky Villa" type="button">Request Private Showing</button>
                 </article>
             </div>
+        </section>
+
+        <section id="portfolio" class="section section--accent mega-portfolio">
+            <div class="section-header" data-animate>
+                <p class="eyebrow">Beyond the Tower</p>
+                <h2 class="section-title">Explore the Codex Global Portfolio</h2>
+                <p class="section-text">Our residences span iconic cities, each crafted with a distinct design language. Filter by lifestyle signature to discover your next address.</p>
+            </div>
+            <div class="portfolio-controls" data-animate>
+                <div class="portfolio-summary">
+                    <span class="portfolio-count" id="portfolioCount">0 residences</span>
+                    <p>Curated by our development studios in New York, London, Dubai, and Singapore.</p>
+                </div>
+                <div class="portfolio-filters" role="group" aria-label="Filter portfolio by signature">
+                    <button class="portfolio-filter active" data-portfolio-filter="all" type="button">All Signatures</button>
+                    <button class="portfolio-filter" data-portfolio-filter="skyline" type="button">Skyline</button>
+                    <button class="portfolio-filter" data-portfolio-filter="wellness" type="button">Wellness</button>
+                    <button class="portfolio-filter" data-portfolio-filter="heritage" type="button">Heritage</button>
+                    <button class="portfolio-filter" data-portfolio-filter="resort" type="button">Resort</button>
+                </div>
+            </div>
+            <div class="portfolio-grid" id="portfolioGrid" aria-live="polite"></div>
+        </section>
+
+        <section id="leasing" class="section mega-leasing">
+            <div class="section-header" data-animate>
+                <p class="eyebrow">Lease the Extraordinary</p>
+                <h2 class="section-title">A Flagship Leasing Marketplace</h2>
+                <p class="section-text">Codex Residences introduces an expansive release of flagship homes. Begin a guided application, submit a mock payment, and secure your home within minutes.</p>
+            </div>
+            <div class="leasing-controls" data-animate>
+                <div class="leasing-filters" role="group" aria-label="Filter residences available to lease">
+                    <button class="lease-filter active" data-lease-filter="all" type="button">All</button>
+                    <button class="lease-filter" data-lease-filter="studio" type="button">Studios</button>
+                    <button class="lease-filter" data-lease-filter="one" type="button">1 Bedroom</button>
+                    <button class="lease-filter" data-lease-filter="two" type="button">2 Bedroom</button>
+                    <button class="lease-filter" data-lease-filter="three" type="button">3 Bedroom</button>
+                    <button class="lease-filter" data-lease-filter="penthouse" type="button">Penthouses</button>
+                    <button class="lease-filter" data-lease-filter="sky" type="button">Sky Collection</button>
+                </div>
+                <div class="leasing-sort">
+                    <label for="leaseSort" class="leasing-sort__label">Sort by</label>
+                    <select id="leaseSort" class="leasing-sort__select">
+                        <option value="recommended">Recommended</option>
+                        <option value="priceAsc">Price: Low to High</option>
+                        <option value="priceDesc">Price: High to Low</option>
+                        <option value="sizeDesc">Largest Layouts</option>
+                    </select>
+                </div>
+            </div>
+            <div class="leasing-grid" id="leasingGrid" aria-live="polite"></div>
+            <aside class="leasing-legend" data-animate>
+                <h3 class="leasing-legend__title">Application Milestones</h3>
+                <ol class="leasing-legend__list">
+                    <li>Curate your residence and move-in timeline.</li>
+                    <li>Share resident profiles and lifestyle notes.</li>
+                    <li>Authorize a refundable mock deposit.</li>
+                    <li>Create your Codex account and unlock the resident portal.</li>
+                </ol>
+            </aside>
         </section>
 
         <section id="amenities" class="section">
@@ -600,6 +663,46 @@
             </div>
         </section>
 
+        <section id="residents" class="section section--dark resident-portal">
+            <div class="section-header" data-animate>
+                <p class="eyebrow">Resident Portal</p>
+                <h2 class="section-title">Welcome to Your Codex Account</h2>
+                <p class="section-text">Complete an application and your residence will appear here instantly. Manage move-in milestones, concierge introductions, and lease documentation from a single hub.</p>
+            </div>
+            <div class="portal-grid" data-animate>
+                <article class="portal-card" aria-live="polite">
+                    <h3 class="portal-card__title">Account Overview</h3>
+                    <p class="portal-card__subtitle" id="accountStatus">Create an account after your mock payment to unlock the resident experience.</p>
+                    <dl class="portal-details" id="accountDetails" hidden>
+                        <div>
+                            <dt>Resident</dt>
+                            <dd id="accountName">—</dd>
+                        </div>
+                        <div>
+                            <dt>Primary Email</dt>
+                            <dd id="accountEmail">—</dd>
+                        </div>
+                    </dl>
+                    <button class="portal-reset" id="accountReset" type="button" hidden>Reset Resident Account</button>
+                </article>
+                <article class="portal-card">
+                    <h3 class="portal-card__title">Secured Residences</h3>
+                    <p class="portal-card__subtitle">Your confirmed homes and upcoming lease activations appear below.</p>
+                    <div class="portal-properties" id="accountProperties">
+                        <p class="portal-empty">No residences have been added yet. Start an application to reserve your home.</p>
+                    </div>
+                </article>
+                <article class="portal-card">
+                    <h3 class="portal-card__title">Next Concierge Steps</h3>
+                    <ul class="portal-next-steps" id="portalNextSteps">
+                        <li>Personalize your welcome call with the resident experience team.</li>
+                        <li>Upload identification and proof of income securely.</li>
+                        <li>Schedule white-glove move-in services and art installation.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
         <section id="contact" class="section contact-section">
             <div class="contact-wrapper" data-animate>
                 <div class="contact-info">
@@ -778,6 +881,168 @@
                 <p id="bookingConfirmationCopy">Our concierge team will reach out shortly to finalize your experience.</p>
                 <div class="booking-confirmation__summary" id="bookingConfirmationSummary"></div>
                 <button class="booking-nav booking-nav--close" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="leaseModal" class="lease-modal" role="dialog" aria-modal="true" aria-labelledby="leaseModalTitle" aria-hidden="true">
+        <div class="lease-modal__dialog" role="document">
+            <button class="lease-modal__close" type="button" aria-label="Close lease application">&times;</button>
+            <header class="lease-modal__header">
+                <p class="lease-modal__eyebrow" id="leaseModalEyebrow">Lease Application</p>
+                <h2 class="lease-modal__title" id="leaseModalTitle">Begin Your Application</h2>
+                <p class="lease-modal__subtitle" id="leaseModalSubtitle">Secure your residence with a guided, five-step digital experience.</p>
+                <div class="lease-progress" aria-hidden="true">
+                    <div class="lease-progress__bar"></div>
+                </div>
+            </header>
+            <form id="leaseForm" class="lease-form" novalidate>
+                <div class="lease-step" data-step="0">
+                    <h3 class="lease-step__title">Confirm Your Residence</h3>
+                    <p class="lease-step__copy">Review the curated highlights of your selected home and establish your move-in preferences.</p>
+                    <div class="lease-property" id="leasePropertySummary" aria-live="polite"></div>
+                    <div class="form-group">
+                        <label for="applicationMoveIn">Preferred move-in date</label>
+                        <input type="date" id="applicationMoveIn" name="applicationMoveIn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaseTerm">Desired lease term</label>
+                        <select id="leaseTerm" name="leaseTerm">
+                            <option value="12 Months">12 Months</option>
+                            <option value="15 Months">15 Months</option>
+                            <option value="18 Months">18 Months</option>
+                            <option value="24 Months">24 Months</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="occupants">Number of residents</label>
+                        <select id="occupants" name="occupants">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4+</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="lease-step" data-step="1" hidden>
+                    <h3 class="lease-step__title">Resident Profiles</h3>
+                    <p class="lease-step__copy">Tell us about the residents so our concierge team can craft the welcome experience.</p>
+                    <div class="form-group">
+                        <label for="applicantName">Primary resident name</label>
+                        <input type="text" id="applicantName" name="applicantName" placeholder="Full legal name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="applicantEmail">Primary email</label>
+                        <input type="email" id="applicantEmail" name="applicantEmail" placeholder="name@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="applicantPhone">Mobile number</label>
+                        <input type="tel" id="applicantPhone" name="applicantPhone" placeholder="(212) 555-6789" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="coApplicant">Co-resident (optional)</label>
+                        <input type="text" id="coApplicant" name="coApplicant" placeholder="Add a co-resident or guarantor">
+                    </div>
+                    <div class="form-group">
+                        <label for="lifestyleNotes">Lifestyle notes</label>
+                        <textarea id="lifestyleNotes" name="lifestyleNotes" rows="3" placeholder="e.g., Two small dogs, prefers south-facing light"></textarea>
+                    </div>
+                </div>
+                <div class="lease-step" data-step="2" hidden>
+                    <h3 class="lease-step__title">Financial Snapshot</h3>
+                    <p class="lease-step__copy">A quick overview helps us pre-approve your application before the concierge consultation.</p>
+                    <div class="form-group">
+                        <label for="employer">Employer or business name</label>
+                        <input type="text" id="employer" name="employer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role or title</label>
+                        <input type="text" id="role" name="role" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="annualIncome">Combined annual income (USD)</label>
+                        <input type="number" id="annualIncome" name="annualIncome" min="0" step="1000" placeholder="250000" required>
+                    </div>
+                    <div class="form-group form-group--inline">
+                        <label class="checkbox">
+                            <input type="checkbox" id="hasPets" name="hasPets">
+                            <span>We will be bringing pets</span>
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" id="needsParking" name="needsParking">
+                            <span>Reserve private parking</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="financialNotes">Additional notes</label>
+                        <textarea id="financialNotes" name="financialNotes" rows="3" placeholder="Share any guarantor details or special requests."></textarea>
+                    </div>
+                </div>
+                <div class="lease-step" data-step="3" hidden>
+                    <h3 class="lease-step__title">Secure with a Mock Deposit</h3>
+                    <p class="lease-step__copy">Authorize a refundable mock payment to finalize your reservation. No real charges will be processed.</p>
+                    <div class="form-group">
+                        <label for="cardName">Name on card</label>
+                        <input type="text" id="cardName" name="cardName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardNumber">Card number</label>
+                        <input type="text" id="cardNumber" name="cardNumber" inputmode="numeric" pattern="[0-9]{13,19}" maxlength="19" placeholder="4242 4242 4242 4242" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cardExpiry">Expiration</label>
+                            <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cardCvc">CVC</label>
+                            <input type="text" id="cardCvc" name="cardCvc" inputmode="numeric" maxlength="4" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="billingZip">Billing ZIP</label>
+                            <input type="text" id="billingZip" name="billingZip" inputmode="numeric" maxlength="10" required>
+                        </div>
+                    </div>
+                    <div class="payment-status" id="paymentStatus" role="status" aria-live="polite"></div>
+                </div>
+                <div class="lease-step" data-step="4" hidden>
+                    <h3 class="lease-step__title">Create Your Codex Account</h3>
+                    <p class="lease-step__copy">Finalize your lease by creating portal credentials. We'll automatically add your residence to the account.</p>
+                    <div class="form-group">
+                        <label for="accountEmailConfirm">Account email</label>
+                        <input type="email" id="accountEmailConfirm" name="accountEmailConfirm" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountPassword">Create password</label>
+                        <input type="password" id="accountPassword" name="accountPassword" minlength="8" placeholder="Minimum 8 characters" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountPasswordConfirm">Confirm password</label>
+                        <input type="password" id="accountPasswordConfirm" name="accountPasswordConfirm" minlength="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                            <span>I agree to the Codex digital lease terms.</span>
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" id="agreeUpdates" name="agreeUpdates">
+                            <span>Send me curated resident lifestyle updates.</span>
+                        </label>
+                    </div>
+                </div>
+                <footer class="lease-modal__footer">
+                    <button class="lease-nav lease-nav--back" type="button" data-lease-action="prev">Back</button>
+                    <button class="lease-nav lease-nav--next" type="button" data-lease-action="next">Next</button>
+                    <button class="lease-submit" type="submit" data-lease-action="submit">Complete Application</button>
+                </footer>
+            </form>
+            <div id="leaseConfirmation" class="lease-confirmation" hidden>
+                <div class="lease-confirmation__icon" aria-hidden="true">✔</div>
+                <h3 id="leaseConfirmationTitle">Application Complete</h3>
+                <p id="leaseConfirmationCopy">Your mock payment has been accepted and your residence has been added to your Codex account.</p>
+                <div class="lease-confirmation__summary" id="leaseConfirmationSummary"></div>
+                <button class="lease-nav lease-nav--close" type="button" id="leaseCloseButton">Close portal</button>
             </div>
         </div>
     </div>
