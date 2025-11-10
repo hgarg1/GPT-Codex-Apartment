@@ -261,6 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const floorplanSize = document.querySelector('.floorplan-size');
     const floorplanList = document.querySelector('.floorplan-list');
 
+    const svgToDataUri = (svg) => `data:image/svg+xml,${encodeURIComponent(svg)}`;
+
     const floorplanContent = {
         aurora: {
             title: 'Aurora Studio',
@@ -270,7 +272,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Italian cabinetry with smart appliance suite',
                 'Spa shower featuring digital temperature presets'
             ],
-            gradient: 'linear-gradient(135deg, rgba(42,110,242,0.45), rgba(15,26,44,0.85))'
+            overlay: 'linear-gradient(135deg, rgba(42,110,242,0.45), rgba(15,26,44,0.85))',
+            image: svgToDataUri(`
+                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 520'>
+                    <rect width='800' height='520' fill='#0f172a'/>
+                    <rect x='40' y='40' width='340' height='220' fill='none' stroke='#f6c343' stroke-width='6'/>
+                    <rect x='400' y='40' width='360' height='160' fill='none' stroke='#38bdf8' stroke-width='6'/>
+                    <rect x='40' y='280' width='340' height='200' fill='none' stroke='#38bdf8' stroke-width='6'/>
+                    <rect x='400' y='220' width='360' height='260' fill='none' stroke='#f6c343' stroke-width='6'/>
+                    <line x1='210' y1='40' x2='210' y2='260' stroke='#94a3b8' stroke-width='4' stroke-dasharray='12 16'/>
+                    <line x1='40' y1='380' x2='380' y2='380' stroke='#94a3b8' stroke-width='4' stroke-dasharray='12 16'/>
+                    <text x='110' y='160' fill='#f8fafc' font-size='32' font-family='Poppins'>Living</text>
+                    <text x='470' y='130' fill='#f8fafc' font-size='32' font-family='Poppins'>Kitchen</text>
+                    <text x='120' y='360' fill='#f8fafc' font-size='32' font-family='Poppins'>Sleep</text>
+                    <text x='470' y='360' fill='#f8fafc' font-size='32' font-family='Poppins'>Bath</text>
+                </svg>
+            `),
+            alt: 'Aurora Studio floor plan layout'
         },
         lumen: {
             title: 'Lumen One Bedroom',
@@ -280,7 +298,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Owner's suite with custom wardrobe system",
                 'Signature quartz waterfall island and wine fridge'
             ],
-            gradient: 'linear-gradient(135deg, rgba(246,195,67,0.4), rgba(42,110,242,0.7))'
+            overlay: 'linear-gradient(135deg, rgba(246,195,67,0.4), rgba(42,110,242,0.7))',
+            image: svgToDataUri(`
+                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 520'>
+                    <rect width='800' height='520' fill='#111827'/>
+                    <rect x='40' y='40' width='300' height='180' fill='none' stroke='#facc15' stroke-width='6'/>
+                    <rect x='360' y='40' width='380' height='220' fill='none' stroke='#f97316' stroke-width='6'/>
+                    <rect x='40' y='240' width='300' height='240' fill='none' stroke='#38bdf8' stroke-width='6'/>
+                    <rect x='360' y='280' width='380' height='200' fill='none' stroke='#22d3ee' stroke-width='6'/>
+                    <line x1='200' y1='40' x2='200' y2='220' stroke='#cbd5f5' stroke-width='4'/>
+                    <line x1='40' y1='360' x2='320' y2='360' stroke='#cbd5f5' stroke-width='4'/>
+                    <text x='80' y='140' fill='#e2e8f0' font-size='28' font-family='Poppins'>Winter</text>
+                    <text x='80' y='170' fill='#e2e8f0' font-size='28' font-family='Poppins'>Garden</text>
+                    <text x='410' y='150' fill='#e2e8f0' font-size='32' font-family='Poppins'>Living</text>
+                    <text x='90' y='360' fill='#e2e8f0' font-size='32' font-family='Poppins'>Suite</text>
+                    <text x='420' y='380' fill='#e2e8f0' font-size='32' font-family='Poppins'>Kitchen</text>
+                </svg>
+            `),
+            alt: 'Lumen one bedroom residence floor plan'
         },
         horizon: {
             title: 'Horizon Two Bedroom',
@@ -290,7 +325,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Ensuite spa baths with soaking tub & radiant floors',
                 'Private flex suite ideal for office or guest lounge'
             ],
-            gradient: 'linear-gradient(135deg, rgba(45,212,191,0.45), rgba(15,23,42,0.9))'
+            overlay: 'linear-gradient(135deg, rgba(45,212,191,0.45), rgba(15,23,42,0.9))',
+            image: svgToDataUri(`
+                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 840 540'>
+                    <rect width='840' height='540' fill='#0b1220'/>
+                    <rect x='40' y='40' width='360' height='200' fill='none' stroke='#22c55e' stroke-width='6'/>
+                    <rect x='420' y='40' width='360' height='200' fill='none' stroke='#0ea5e9' stroke-width='6'/>
+                    <rect x='40' y='260' width='360' height='220' fill='none' stroke='#f6c343' stroke-width='6'/>
+                    <rect x='420' y='260' width='360' height='220' fill='none' stroke='#f97316' stroke-width='6'/>
+                    <rect x='320' y='220' width='200' height='80' fill='none' stroke='#c4b5fd' stroke-width='6'/>
+                    <text x='120' y='150' fill='#f8fafc' font-size='32' font-family='Poppins'>Bedroom A</text>
+                    <text x='500' y='150' fill='#f8fafc' font-size='32' font-family='Poppins'>Bedroom B</text>
+                    <text x='120' y='380' fill='#f8fafc' font-size='32' font-family='Poppins'>Terrace</text>
+                    <text x='520' y='380' fill='#f8fafc' font-size='32' font-family='Poppins'>Great Room</text>
+                    <text x='360' y='260' fill='#f8fafc' font-size='24' font-family='Poppins'>Gallery</text>
+                </svg>
+            `),
+            alt: 'Horizon two bedroom residence floor plan'
         },
         zenith: {
             title: 'Zenith Penthouse',
@@ -300,33 +351,64 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Catering kitchen with butler's pantry and wine wall",
                 'Private elevator vestibule and wellness spa'
             ],
-            gradient: 'linear-gradient(135deg, rgba(124,58,237,0.5), rgba(15,23,42,0.92))'
+            overlay: 'linear-gradient(135deg, rgba(124,58,237,0.5), rgba(15,23,42,0.92))',
+            image: svgToDataUri(`
+                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 860 560'>
+                    <rect width='860' height='560' fill='#130c31'/>
+                    <rect x='60' y='60' width='340' height='200' fill='none' stroke='#a855f7' stroke-width='6'/>
+                    <rect x='420' y='60' width='360' height='160' fill='none' stroke='#f6c343' stroke-width='6'/>
+                    <rect x='60' y='300' width='340' height='200' fill='none' stroke='#f97316' stroke-width='6'/>
+                    <rect x='420' y='260' width='360' height='240' fill='none' stroke='#38bdf8' stroke-width='6'/>
+                    <rect x='360' y='220' width='140' height='80' fill='none' stroke='#fda4af' stroke-width='6'/>
+                    <rect x='360' y='340' width='140' height='80' fill='none' stroke='#fda4af' stroke-width='6'/>
+                    <text x='140' y='160' fill='#f8fafc' font-size='32' font-family='Poppins'>Solarium</text>
+                    <text x='500' y='150' fill='#f8fafc' font-size='32' font-family='Poppins'>Salon</text>
+                    <text x='150' y='400' fill='#f8fafc' font-size='32' font-family='Poppins'>Wellness</text>
+                    <text x='520' y='400' fill='#f8fafc' font-size='32' font-family='Poppins'>Sky Lounge</text>
+                    <text x='376' y='260' fill='#f8fafc' font-size='20' font-family='Poppins'>Elev.</text>
+                    <text x='376' y='380' fill='#f8fafc' font-size='20' font-family='Poppins'>Pantry</text>
+                </svg>
+            `),
+            alt: 'Zenith penthouse residence floor plan'
+        }
+    };
+
+    const updateFloorplanDisplay = (planKey) => {
+        const plan = floorplanContent[planKey];
+        if (!plan) return;
+
+        floorplanButtonEls.forEach(btn => {
+            const isActive = btn.dataset.plan === planKey;
+            btn.classList.toggle('active', isActive);
+        });
+
+        if (floorplanImage) {
+            floorplanImage.style.backgroundImage = `${plan.overlay}, url('${plan.image}')`;
+            floorplanImage.style.backgroundSize = 'cover, contain';
+            floorplanImage.style.backgroundPosition = 'center, center';
+            floorplanImage.style.backgroundRepeat = 'no-repeat, no-repeat';
+            floorplanImage.setAttribute('aria-label', plan.alt || plan.title);
+        }
+        if (floorplanTitle) {
+            floorplanTitle.textContent = plan.title;
+        }
+        if (floorplanSize) {
+            floorplanSize.textContent = plan.size;
+        }
+        if (floorplanList) {
+            floorplanList.innerHTML = plan.features.map(feature => `<li>${feature}</li>`).join('');
         }
     };
 
     floorplanButtonEls.forEach(button => {
         button.addEventListener('click', () => {
             const planKey = button.dataset.plan || 'aurora';
-            const plan = floorplanContent[planKey];
-            if (!plan) return;
-
-            floorplanButtonEls.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            if (floorplanImage) {
-                floorplanImage.style.background = plan.gradient;
-            }
-            if (floorplanTitle) {
-                floorplanTitle.textContent = plan.title;
-            }
-            if (floorplanSize) {
-                floorplanSize.textContent = plan.size;
-            }
-            if (floorplanList) {
-                floorplanList.innerHTML = plan.features.map(feature => `<li>${feature}</li>`).join('');
-            }
+            updateFloorplanDisplay(planKey);
         });
     });
+
+    const defaultPlanKey = document.querySelector('.floorplan-button.active')?.dataset.plan || 'aurora';
+    updateFloorplanDisplay(defaultPlanKey);
 
     // Booking modal flow
     if (bookingModal && bookingForm) {
