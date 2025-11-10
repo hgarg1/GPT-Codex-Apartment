@@ -261,8 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const floorplanSize = document.querySelector('.floorplan-size');
     const floorplanList = document.querySelector('.floorplan-list');
 
-    const svgToDataUri = (svg) => `data:image/svg+xml,${encodeURIComponent(svg)}`;
-
     const floorplanContent = {
         aurora: {
             title: 'Aurora Studio',
@@ -273,21 +271,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Spa shower featuring digital temperature presets'
             ],
             overlay: 'linear-gradient(135deg, rgba(42,110,242,0.45), rgba(15,26,44,0.85))',
-            image: svgToDataUri(`
-                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 520'>
-                    <rect width='800' height='520' fill='#0f172a'/>
-                    <rect x='40' y='40' width='340' height='220' fill='none' stroke='#f6c343' stroke-width='6'/>
-                    <rect x='400' y='40' width='360' height='160' fill='none' stroke='#38bdf8' stroke-width='6'/>
-                    <rect x='40' y='280' width='340' height='200' fill='none' stroke='#38bdf8' stroke-width='6'/>
-                    <rect x='400' y='220' width='360' height='260' fill='none' stroke='#f6c343' stroke-width='6'/>
-                    <line x1='210' y1='40' x2='210' y2='260' stroke='#94a3b8' stroke-width='4' stroke-dasharray='12 16'/>
-                    <line x1='40' y1='380' x2='380' y2='380' stroke='#94a3b8' stroke-width='4' stroke-dasharray='12 16'/>
-                    <text x='110' y='160' fill='#f8fafc' font-size='32' font-family='Poppins'>Living</text>
-                    <text x='470' y='130' fill='#f8fafc' font-size='32' font-family='Poppins'>Kitchen</text>
-                    <text x='120' y='360' fill='#f8fafc' font-size='32' font-family='Poppins'>Sleep</text>
-                    <text x='470' y='360' fill='#f8fafc' font-size='32' font-family='Poppins'>Bath</text>
+            svg: `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="presentation" focusable="false">
+                    <rect x="30" y="30" width="740" height="460" fill="none" stroke="#9dbcf7" stroke-width="10"/>
+                    <rect x="60" y="60" width="310" height="190" fill="rgba(15,23,42,0.4)" stroke="#e2e8f0" stroke-width="6"/>
+                    <rect x="400" y="60" width="340" height="160" fill="rgba(15,23,42,0.25)" stroke="#cbd5f5" stroke-width="6"/>
+                    <rect x="60" y="280" width="310" height="190" fill="rgba(15,23,42,0.25)" stroke="#cbd5f5" stroke-width="6"/>
+                    <rect x="400" y="240" width="340" height="230" fill="rgba(15,23,42,0.4)" stroke="#e2e8f0" stroke-width="6"/>
+                    <rect x="60" y="250" width="680" height="30" fill="#9dbcf7" opacity="0.15"/>
+                    <rect x="370" y="60" width="30" height="410" fill="#9dbcf7" opacity="0.15"/>
+                    <path d="M370 180 h-60" stroke="#e2e8f0" stroke-width="6"/>
+                    <path d="M310 180 a40 40 0 0 1 40 -40" stroke="#e2e8f0" stroke-width="6" fill="none"/>
+                    <path d="M400 360 h60" stroke="#e2e8f0" stroke-width="6"/>
+                    <path d="M460 360 a40 40 0 0 0 -40 -40" stroke="#e2e8f0" stroke-width="6" fill="none"/>
+                    <rect x="100" y="100" width="140" height="90" fill="#f1f5f9" opacity="0.1" stroke="#f8fafc" stroke-width="4"/>
+                    <rect x="450" y="90" width="180" height="70" fill="#f1f5f9" opacity="0.1" stroke="#f8fafc" stroke-width="4"/>
+                    <rect x="120" y="320" width="160" height="120" fill="#f1f5f9" opacity="0.1" stroke="#f8fafc" stroke-width="4" rx="12"/>
+                    <rect x="470" y="300" width="210" height="150" fill="#f1f5f9" opacity="0.1" stroke="#f8fafc" stroke-width="4"/>
+                    <text x="150" y="155" fill="#f8fafc" font-size="28" font-family="Poppins">Living</text>
+                    <text x="470" y="135" fill="#f8fafc" font-size="26" font-family="Poppins">Culinary</text>
+                    <text x="150" y="385" fill="#f8fafc" font-size="28" font-family="Poppins">Sleep</text>
+                    <text x="470" y="370" fill="#f8fafc" font-size="28" font-family="Poppins">Bath Suite</text>
                 </svg>
-            `),
+            `,
             alt: 'Aurora Studio floor plan layout'
         },
         lumen: {
@@ -299,22 +305,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Signature quartz waterfall island and wine fridge'
             ],
             overlay: 'linear-gradient(135deg, rgba(246,195,67,0.4), rgba(42,110,242,0.7))',
-            image: svgToDataUri(`
-                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 520'>
-                    <rect width='800' height='520' fill='#111827'/>
-                    <rect x='40' y='40' width='300' height='180' fill='none' stroke='#facc15' stroke-width='6'/>
-                    <rect x='360' y='40' width='380' height='220' fill='none' stroke='#f97316' stroke-width='6'/>
-                    <rect x='40' y='240' width='300' height='240' fill='none' stroke='#38bdf8' stroke-width='6'/>
-                    <rect x='360' y='280' width='380' height='200' fill='none' stroke='#22d3ee' stroke-width='6'/>
-                    <line x1='200' y1='40' x2='200' y2='220' stroke='#cbd5f5' stroke-width='4'/>
-                    <line x1='40' y1='360' x2='320' y2='360' stroke='#cbd5f5' stroke-width='4'/>
-                    <text x='80' y='140' fill='#e2e8f0' font-size='28' font-family='Poppins'>Winter</text>
-                    <text x='80' y='170' fill='#e2e8f0' font-size='28' font-family='Poppins'>Garden</text>
-                    <text x='410' y='150' fill='#e2e8f0' font-size='32' font-family='Poppins'>Living</text>
-                    <text x='90' y='360' fill='#e2e8f0' font-size='32' font-family='Poppins'>Suite</text>
-                    <text x='420' y='380' fill='#e2e8f0' font-size='32' font-family='Poppins'>Kitchen</text>
+            svg: `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 540" role="presentation" focusable="false">
+                    <rect x="40" y="40" width="740" height="460" fill="none" stroke="#fde68a" stroke-width="10"/>
+                    <rect x="70" y="70" width="260" height="180" fill="rgba(30,41,59,0.35)" stroke="#fde68a" stroke-width="6"/>
+                    <rect x="360" y="70" width="360" height="200" fill="rgba(30,41,59,0.25)" stroke="#fbbf24" stroke-width="6"/>
+                    <rect x="70" y="280" width="260" height="190" fill="rgba(30,41,59,0.25)" stroke="#bae6fd" stroke-width="6"/>
+                    <rect x="360" y="300" width="360" height="180" fill="rgba(30,41,59,0.35)" stroke="#bae6fd" stroke-width="6"/>
+                    <line x1="200" y1="70" x2="200" y2="250" stroke="#e2e8f0" stroke-width="5"/>
+                    <line x1="70" y1="360" x2="330" y2="360" stroke="#e2e8f0" stroke-width="5"/>
+                    <path d="M330 200 h-60" stroke="#e2e8f0" stroke-width="6"/>
+                    <path d="M270 200 a40 40 0 0 1 40 -40" stroke="#e2e8f0" stroke-width="6" fill="none"/>
+                    <path d="M360 360 h60" stroke="#e2e8f0" stroke-width="6"/>
+                    <path d="M420 360 a40 40 0 0 0 -40 -40" stroke="#e2e8f0" stroke-width="6" fill="none"/>
+                    <rect x="100" y="100" width="120" height="70" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4" rx="10"/>
+                    <rect x="430" y="110" width="180" height="90" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <rect x="120" y="310" width="160" height="120" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4" rx="12"/>
+                    <rect x="430" y="320" width="230" height="120" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <rect x="620" y="320" width="70" height="60" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <text x="110" y="160" fill="#fefce8" font-size="26" font-family="Poppins">Winter Garden</text>
+                    <text x="420" y="155" fill="#fefce8" font-size="30" font-family="Poppins">Great Room</text>
+                    <text x="120" y="380" fill="#fefce8" font-size="28" font-family="Poppins">Owner's Suite</text>
+                    <text x="430" y="385" fill="#fefce8" font-size="26" font-family="Poppins">Culinary Atelier</text>
+                    <text x="630" y="365" fill="#fefce8" font-size="20" font-family="Poppins">Pantry</text>
                 </svg>
-            `),
+            `,
             alt: 'Lumen one bedroom residence floor plan'
         },
         horizon: {
@@ -326,21 +341,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Private flex suite ideal for office or guest lounge'
             ],
             overlay: 'linear-gradient(135deg, rgba(45,212,191,0.45), rgba(15,23,42,0.9))',
-            image: svgToDataUri(`
-                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 840 540'>
-                    <rect width='840' height='540' fill='#0b1220'/>
-                    <rect x='40' y='40' width='360' height='200' fill='none' stroke='#22c55e' stroke-width='6'/>
-                    <rect x='420' y='40' width='360' height='200' fill='none' stroke='#0ea5e9' stroke-width='6'/>
-                    <rect x='40' y='260' width='360' height='220' fill='none' stroke='#f6c343' stroke-width='6'/>
-                    <rect x='420' y='260' width='360' height='220' fill='none' stroke='#f97316' stroke-width='6'/>
-                    <rect x='320' y='220' width='200' height='80' fill='none' stroke='#c4b5fd' stroke-width='6'/>
-                    <text x='120' y='150' fill='#f8fafc' font-size='32' font-family='Poppins'>Bedroom A</text>
-                    <text x='500' y='150' fill='#f8fafc' font-size='32' font-family='Poppins'>Bedroom B</text>
-                    <text x='120' y='380' fill='#f8fafc' font-size='32' font-family='Poppins'>Terrace</text>
-                    <text x='520' y='380' fill='#f8fafc' font-size='32' font-family='Poppins'>Great Room</text>
-                    <text x='360' y='260' fill='#f8fafc' font-size='24' font-family='Poppins'>Gallery</text>
+            svg: `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 560" role="presentation" focusable="false">
+                    <rect x="40" y="40" width="780" height="480" fill="none" stroke="#5eead4" stroke-width="12"/>
+                    <rect x="70" y="70" width="340" height="210" fill="rgba(15,23,42,0.35)" stroke="#34d399" stroke-width="6"/>
+                    <rect x="430" y="70" width="340" height="210" fill="rgba(15,23,42,0.25)" stroke="#38bdf8" stroke-width="6"/>
+                    <rect x="70" y="320" width="340" height="170" fill="rgba(15,23,42,0.25)" stroke="#facc15" stroke-width="6"/>
+                    <rect x="430" y="300" width="340" height="190" fill="rgba(15,23,42,0.35)" stroke="#fb923c" stroke-width="6"/>
+                    <rect x="320" y="280" width="220" height="80" fill="rgba(15,23,42,0.5)" stroke="#c4b5fd" stroke-width="6"/>
+                    <line x1="410" y1="280" x2="410" y2="360" stroke="#e0f2fe" stroke-width="5"/>
+                    <line x1="320" y1="320" x2="540" y2="320" stroke="#e0f2fe" stroke-width="5"/>
+                    <path d="M410 320 h60" stroke="#e0f2fe" stroke-width="6"/>
+                    <path d="M470 320 a40 40 0 0 0 -40 -40" stroke="#e0f2fe" stroke-width="6" fill="none"/>
+                    <path d="M320 360 h-60" stroke="#e0f2fe" stroke-width="6"/>
+                    <path d="M260 360 a40 40 0 0 1 40 -40" stroke="#e0f2fe" stroke-width="6" fill="none"/>
+                    <rect x="110" y="100" width="200" height="90" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <rect x="470" y="100" width="210" height="90" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <rect x="130" y="350" width="220" height="110" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <rect x="470" y="330" width="230" height="120" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <text x="140" y="160" fill="#ecfeff" font-size="28" font-family="Poppins">Bedroom A</text>
+                    <text x="500" y="160" fill="#ecfeff" font-size="28" font-family="Poppins">Bedroom B</text>
+                    <text x="140" y="400" fill="#ecfeff" font-size="28" font-family="Poppins">Terrace Lounge</text>
+                    <text x="500" y="390" fill="#ecfeff" font-size="28" font-family="Poppins">Great Room</text>
+                    <text x="362" y="318" fill="#e0f2fe" font-size="20" font-family="Poppins">Gallery</text>
                 </svg>
-            `),
+            `,
             alt: 'Horizon two bedroom residence floor plan'
         },
         zenith: {
@@ -352,23 +377,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Private elevator vestibule and wellness spa'
             ],
             overlay: 'linear-gradient(135deg, rgba(124,58,237,0.5), rgba(15,23,42,0.92))',
-            image: svgToDataUri(`
-                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 860 560'>
-                    <rect width='860' height='560' fill='#130c31'/>
-                    <rect x='60' y='60' width='340' height='200' fill='none' stroke='#a855f7' stroke-width='6'/>
-                    <rect x='420' y='60' width='360' height='160' fill='none' stroke='#f6c343' stroke-width='6'/>
-                    <rect x='60' y='300' width='340' height='200' fill='none' stroke='#f97316' stroke-width='6'/>
-                    <rect x='420' y='260' width='360' height='240' fill='none' stroke='#38bdf8' stroke-width='6'/>
-                    <rect x='360' y='220' width='140' height='80' fill='none' stroke='#fda4af' stroke-width='6'/>
-                    <rect x='360' y='340' width='140' height='80' fill='none' stroke='#fda4af' stroke-width='6'/>
-                    <text x='140' y='160' fill='#f8fafc' font-size='32' font-family='Poppins'>Solarium</text>
-                    <text x='500' y='150' fill='#f8fafc' font-size='32' font-family='Poppins'>Salon</text>
-                    <text x='150' y='400' fill='#f8fafc' font-size='32' font-family='Poppins'>Wellness</text>
-                    <text x='520' y='400' fill='#f8fafc' font-size='32' font-family='Poppins'>Sky Lounge</text>
-                    <text x='376' y='260' fill='#f8fafc' font-size='20' font-family='Poppins'>Elev.</text>
-                    <text x='376' y='380' fill='#f8fafc' font-size='20' font-family='Poppins'>Pantry</text>
+            svg: `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 580" role="presentation" focusable="false">
+                    <rect x="50" y="50" width="780" height="480" fill="none" stroke="#c4b5fd" stroke-width="12"/>
+                    <rect x="80" y="80" width="320" height="200" fill="rgba(30,27,75,0.35)" stroke="#a855f7" stroke-width="6"/>
+                    <rect x="430" y="80" width="340" height="150" fill="rgba(30,27,75,0.25)" stroke="#fcd34d" stroke-width="6"/>
+                    <rect x="80" y="330" width="320" height="180" fill="rgba(30,27,75,0.25)" stroke="#fb923c" stroke-width="6"/>
+                    <rect x="430" y="300" width="340" height="210" fill="rgba(30,27,75,0.35)" stroke="#38bdf8" stroke-width="6"/>
+                    <rect x="360" y="260" width="160" height="90" fill="rgba(30,27,75,0.45)" stroke="#fda4af" stroke-width="6"/>
+                    <rect x="360" y="380" width="160" height="90" fill="rgba(30,27,75,0.45)" stroke="#fda4af" stroke-width="6"/>
+                    <path d="M360 300 h-60" stroke="#ede9fe" stroke-width="6"/>
+                    <path d="M300 300 a40 40 0 0 1 40 -40" stroke="#ede9fe" stroke-width="6" fill="none"/>
+                    <path d="M520 300 h60" stroke="#ede9fe" stroke-width="6"/>
+                    <path d="M580 300 a40 40 0 0 0 -40 -40" stroke="#ede9fe" stroke-width="6" fill="none"/>
+                    <rect x="120" y="120" width="200" height="100" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <rect x="470" y="120" width="200" height="80" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <rect x="140" y="360" width="200" height="120" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <rect x="470" y="340" width="220" height="130" fill="#f8fafc" opacity="0.08" stroke="#f8fafc" stroke-width="4"/>
+                    <text x="150" y="170" fill="#fdf4ff" font-size="30" font-family="Poppins">Solarium</text>
+                    <text x="490" y="150" fill="#fdf4ff" font-size="28" font-family="Poppins">Grand Salon</text>
+                    <text x="150" y="410" fill="#fdf4ff" font-size="28" font-family="Poppins">Wellness Spa</text>
+                    <text x="500" y="400" fill="#fdf4ff" font-size="28" font-family="Poppins">Sky Lounge</text>
+                    <text x="380" y="305" fill="#fdf4ff" font-size="20" font-family="Poppins">Elev.</text>
+                    <text x="380" y="425" fill="#fdf4ff" font-size="20" font-family="Poppins">Pantry</text>
                 </svg>
-            `),
+            `,
             alt: 'Zenith penthouse residence floor plan'
         }
     };
@@ -383,10 +416,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (floorplanImage) {
-            floorplanImage.style.backgroundImage = `${plan.overlay}, url('${plan.image}')`;
-            floorplanImage.style.backgroundSize = 'cover, contain';
-            floorplanImage.style.backgroundPosition = 'center, center';
-            floorplanImage.style.backgroundRepeat = 'no-repeat, no-repeat';
+            floorplanImage.style.backgroundImage = plan.overlay;
+            floorplanImage.innerHTML = `<div class="floorplan-canvas" aria-hidden="true">${plan.svg}</div>`;
             floorplanImage.setAttribute('aria-label', plan.alt || plan.title);
         }
         if (floorplanTitle) {
