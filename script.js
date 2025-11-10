@@ -362,6 +362,22 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentStep = 0;
         let activeFlow = 'tour';
 
+        const hideElement = element => {
+            if (!element) return;
+            element.hidden = true;
+            element.setAttribute('hidden', '');
+            element.setAttribute('aria-hidden', 'true');
+            element.classList.add('is-hidden');
+        };
+
+        const showElement = element => {
+            if (!element) return;
+            element.hidden = false;
+            element.removeAttribute('hidden');
+            element.setAttribute('aria-hidden', 'false');
+            element.classList.remove('is-hidden');
+        };
+
         const flowContent = {
             tour: {
                 label: 'Private Tour',
@@ -650,12 +666,8 @@ document.addEventListener('DOMContentLoaded', () => {
             guestSelect && (guestSelect.value = guestSelect.options[0]?.value || 'Solo');
             bookingSummary && (bookingSummary.innerHTML = '<strong>Experience Overview</strong><p>Share a few details to personalize your experience.</p>');
             confirmationSummary && (confirmationSummary.innerHTML = '');
-            if (confirmationPanel) {
-                confirmationPanel.hidden = true;
-                confirmationPanel.setAttribute('hidden', '');
-            }
-            bookingForm.hidden = false;
-            bookingForm.removeAttribute('hidden');
+            hideElement(confirmationPanel);
+            showElement(bookingForm);
             currentStep = 0;
             setStepVisibility();
         };
@@ -666,6 +678,8 @@ document.addEventListener('DOMContentLoaded', () => {
             bookingModal.classList.add('open');
             bookingModal.setAttribute('aria-hidden', 'false');
             document.body.classList.add('modal-open');
+            showElement(bookingForm);
+            hideElement(confirmationPanel);
             bookingForm.scrollTop = 0;
         };
 
@@ -674,12 +688,8 @@ document.addEventListener('DOMContentLoaded', () => {
             bookingModal.setAttribute('aria-hidden', 'true');
             document.body.classList.remove('modal-open');
             clearFieldErrors();
-            if (confirmationPanel) {
-                confirmationPanel.hidden = true;
-                confirmationPanel.setAttribute('hidden', '');
-            }
-            bookingForm.hidden = false;
-            bookingForm.removeAttribute('hidden');
+            hideElement(confirmationPanel);
+            showElement(bookingForm);
         };
 
         const validateStep = (stepIndex) => {
@@ -728,10 +738,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const showConfirmation = (contactDetails) => {
             if (!confirmationPanel) return;
-            bookingForm.hidden = true;
-            bookingForm.setAttribute('hidden', '');
-            confirmationPanel.hidden = false;
-            confirmationPanel.removeAttribute('hidden');
+            hideElement(bookingForm);
+            showElement(confirmationPanel);
             confirmationCopy && (confirmationCopy.textContent = getActiveFlowConfig().confirmationCopy);
             if (confirmationSummary && bookingSummary) {
                 confirmationSummary.innerHTML = bookingSummary.innerHTML;
