@@ -410,15 +410,13 @@ img {
     font-family: 'Playfair Display', serif;
     font-size: clamp(2rem, 3.5vw, 2.8rem);
     margin: 0.8rem 0;
-    color: var(--deep);
-    font-weight: 600;
+    color: #061634;
+    font-weight: 700;
     line-height: 1.2;
-    text-shadow: 0 10px 28px rgba(15, 26, 44, 0.18);
 }
 
 .section--dark .section-title {
-    color: #fff;
-    text-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+    color: #f9fbff;
 }
 
 .section-text {
