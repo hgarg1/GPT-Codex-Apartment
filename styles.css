@@ -1078,10 +1078,16 @@ img {
 }
 
 
+.booking-modal [hidden] {
+    display: none !important;
+}
+
 .booking-form {
+    flex: 1 1 auto;
     padding: 2.4rem clamp(1.8rem, 4vw, 2.8rem) 2.6rem;
     overflow-y: auto;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(242, 246, 255, 0.92) 45%, rgba(241, 245, 255, 0.96) 100%);
+    min-height: 0;
 }
 
 .booking-form::before {
@@ -1300,6 +1306,7 @@ img {
 }
 
 .booking-confirmation {
+    flex: 1 1 auto;
     padding: clamp(2.4rem, 4.5vw, 3rem) clamp(1.8rem, 4vw, 2.8rem);
     text-align: center;
     display: flex;
