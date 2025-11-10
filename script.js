@@ -526,8 +526,10 @@ document.addEventListener('DOMContentLoaded', () => {
             confirmationSummary && (confirmationSummary.innerHTML = '');
             if (confirmationPanel) {
                 confirmationPanel.hidden = true;
+                confirmationPanel.setAttribute('hidden', '');
             }
             bookingForm.hidden = false;
+            bookingForm.removeAttribute('hidden');
             currentStep = 0;
             setStepVisibility();
         };
@@ -548,8 +550,10 @@ document.addEventListener('DOMContentLoaded', () => {
             clearFieldErrors();
             if (confirmationPanel) {
                 confirmationPanel.hidden = true;
+                confirmationPanel.setAttribute('hidden', '');
             }
             bookingForm.hidden = false;
+            bookingForm.removeAttribute('hidden');
         };
 
         const validateStep = (stepIndex) => {
@@ -599,7 +603,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const showConfirmation = (contactDetails) => {
             if (!confirmationPanel) return;
             bookingForm.hidden = true;
+            bookingForm.setAttribute('hidden', '');
             confirmationPanel.hidden = false;
+            confirmationPanel.removeAttribute('hidden');
             confirmationCopy && (confirmationCopy.textContent = getActiveFlowConfig().confirmationCopy);
             if (confirmationSummary && bookingSummary) {
                 confirmationSummary.innerHTML = bookingSummary.innerHTML;
