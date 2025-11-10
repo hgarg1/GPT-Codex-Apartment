@@ -11,6 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const bookingModal = document.getElementById('bookingModal');
     const bookingForm = document.getElementById('bookingForm');
     const bookingSummary = document.getElementById('bookingSummary');
+    const galleryModal = document.getElementById('galleryModal');
+    const galleryTrack = galleryModal ? galleryModal.querySelector('.gallery-carousel__track') : null;
+    const galleryCaption = galleryModal ? galleryModal.querySelector('.gallery-modal__caption') : null;
+    const galleryCounter = galleryModal ? galleryModal.querySelector('.gallery-modal__counter') : null;
+    const galleryPrev = galleryModal ? galleryModal.querySelector('[data-gallery-prev]') : null;
+    const galleryNext = galleryModal ? galleryModal.querySelector('[data-gallery-next]') : null;
+    const galleryCloseButtons = galleryModal ? galleryModal.querySelectorAll('[data-gallery-close]') : [];
+    const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
 
     // Handle sticky header appearance and back-to-top visibility
     const handleScrollState = () => {
@@ -61,6 +69,124 @@ document.addEventListener('DOMContentLoaded', () => {
     backToTop && backToTop.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    // Gallery modal + carousel
+    if (galleryModal && galleryTrack && galleryItems.length) {
+        const gallerySlides = galleryItems.map((item, index) => {
+            const image = item.dataset.image || '';
+            const caption = item.dataset.caption || '';
+            const alt = item.getAttribute('aria-label') || `Gallery image ${index + 1}`;
+            return { image, caption, alt };
+        });
+
+        galleryTrack.innerHTML = gallerySlides.map((slide, idx) => `
+            <div class="gallery-carousel__slide" role="listitem">
+                <img src="${slide.image}" alt="${slide.alt}" loading="lazy" data-index="${idx}">
+            </div>
+        `).join('');
+
+        const slides = Array.from(galleryTrack.querySelectorAll('.gallery-carousel__slide'));
+        let activeIndex = 0;
+
+        const focusModal = () => {
+            const focusable = galleryModal.querySelector('button:not([disabled])');
+            focusable && focusable.focus();
+        };
+
+        const updateModal = () => {
+            if (!slides.length) return;
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('is-active', index === activeIndex);
+            });
+            galleryTrack.style.transform = `translateX(-${activeIndex * 100}%)`;
+            const current = gallerySlides[activeIndex];
+            if (galleryCaption) {
+                galleryCaption.textContent = current.caption || '';
+            }
+            if (galleryCounter) {
+                galleryCounter.textContent = `${activeIndex + 1} / ${gallerySlides.length}`;
+            }
+        };
+
+        const openModal = (index) => {
+            activeIndex = index;
+            galleryModal.setAttribute('aria-hidden', 'false');
+            galleryModal.classList.add('open');
+            document.body.classList.add('modal-open');
+            updateModal();
+            focusModal();
+        };
+
+        const closeModal = () => {
+            galleryModal.setAttribute('aria-hidden', 'true');
+            galleryModal.classList.remove('open');
+            document.body.classList.remove('modal-open');
+        };
+
+        const showNext = () => {
+            activeIndex = (activeIndex + 1) % gallerySlides.length;
+            updateModal();
+        };
+
+        const showPrev = () => {
+            activeIndex = (activeIndex - 1 + gallerySlides.length) % gallerySlides.length;
+            updateModal();
+        };
+
+        galleryItems.forEach((item, index) => {
+            const handleActivate = (event) => {
+                if (event instanceof KeyboardEvent && !['Enter', ' ', 'Spacebar'].includes(event.key)) {
+                    return;
+                }
+                event.preventDefault();
+                openModal(index);
+            };
+
+            item.addEventListener('click', (event) => {
+                event.preventDefault();
+                openModal(index);
+            });
+
+            item.addEventListener('keydown', handleActivate);
+        });
+
+        galleryCloseButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                closeModal();
+            });
+        });
+
+        galleryModal.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target instanceof HTMLElement && target.dataset.galleryClose !== undefined) {
+                closeModal();
+            }
+        });
+
+        galleryPrev && galleryPrev.addEventListener('click', (event) => {
+            event.preventDefault();
+            showPrev();
+        });
+
+        galleryNext && galleryNext.addEventListener('click', (event) => {
+            event.preventDefault();
+            showNext();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (!galleryModal.classList.contains('open')) return;
+            if (event.key === 'Escape') {
+                closeModal();
+            } else if (event.key === 'ArrowRight') {
+                showNext();
+            } else if (event.key === 'ArrowLeft') {
+                showPrev();
+            }
+        });
+
+        updateModal();
+    }
 
     // Intersection observer for reveal animations
     const animatedElements = document.querySelectorAll('[data-animate]');
