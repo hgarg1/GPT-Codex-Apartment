@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/themes/airbnb.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/plugins/monthSelect/style.css">
 </head>
 <body>
     <header class="site-header">
@@ -824,11 +827,11 @@
                     </div>
                     <div class="form-group" data-field="date">
                         <label for="experienceDate" id="experienceDateLabel">Preferred tour date</label>
-                        <input type="date" id="experienceDate" name="experienceDate" required>
+                        <input type="text" id="experienceDate" name="experienceDate" placeholder="Select date" required data-enhanced-picker="date">
                     </div>
                     <div class="form-group" data-field="time">
                         <label for="experienceTime" id="experienceTimeLabel">Preferred time</label>
-                        <input type="time" id="experienceTime" name="experienceTime" required>
+                        <input type="text" id="experienceTime" name="experienceTime" placeholder="Select time" required data-enhanced-picker="time">
                     </div>
                     <div class="form-group" data-field="guests">
                         <label for="guestCount">Approximate guest count</label>
@@ -903,7 +906,7 @@
                     <div class="lease-property" id="leasePropertySummary" aria-live="polite"></div>
                     <div class="form-group">
                         <label for="applicationMoveIn">Preferred move-in date</label>
-                        <input type="date" id="applicationMoveIn" name="applicationMoveIn" required>
+                        <input type="text" id="applicationMoveIn" name="applicationMoveIn" placeholder="Select move-in date" required data-enhanced-picker="date">
                     </div>
                     <div class="form-group">
                         <label for="leaseTerm">Desired lease term</label>
@@ -1047,6 +1050,8 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/plugins/monthSelect/index.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

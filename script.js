@@ -34,8 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const accountEmail = document.getElementById('accountEmail');
     const accountProperties = document.getElementById('accountProperties');
     const accountReset = document.getElementById('accountReset');
+    const experienceDateInput = document.getElementById('experienceDate');
+    const experienceTimeInput = document.getElementById('experienceTime');
+    const moveInDateInput = document.getElementById('applicationMoveIn');
+
     let openLeaseApplication = () => {};
     let syncPortfolioToLeasing = null;
+    let experienceDatePicker = null;
+    let experienceTimePicker = null;
+    let moveInDatePicker = null;
+    let experienceDatePickerMode = 'date';
 
     const formatCurrency = (value) => {
         try {
@@ -65,6 +73,159 @@ document.addEventListener('DOMContentLoaded', () => {
             return value;
         }
     };
+
+    const formatDisplayTime = (value) => {
+        if (!value) return '';
+        const [hours, minutes] = value.split(':').map(Number);
+        if (Number.isNaN(hours) || Number.isNaN(minutes)) return value;
+        const date = new Date();
+        date.setHours(hours, minutes, 0, 0);
+        try {
+            return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        } catch (error) {
+            console.warn('Unable to format time', error);
+            return value;
+        }
+    };
+
+    const getFutureDate = (days = 0) => {
+        const date = new Date();
+        date.setHours(0, 0, 0, 0);
+        date.setDate(date.getDate() + Number(days || 0));
+        return date;
+    };
+
+    const decorateAltInput = (picker, type, placeholder = '') => {
+        if (!picker || !picker.altInput) return;
+        const altInput = picker.altInput;
+        if (type) {
+            altInput.dataset.enhancedPicker = type;
+        }
+        if (placeholder) {
+            altInput.placeholder = placeholder;
+        }
+        altInput.classList.add('flatpickr-alt-input');
+    };
+
+    const setupExperienceDatePicker = (mode = 'date') => {
+        if (!window.flatpickr || !experienceDateInput) return null;
+
+        if (experienceDatePicker) {
+            experienceDatePicker.destroy();
+            experienceDatePicker = null;
+        }
+
+        let appliedMode = mode;
+        if (mode === 'month' && !window.monthSelectPlugin) {
+            appliedMode = 'date';
+        }
+        const placeholder = appliedMode === 'month' ? 'Select month' : 'Select date';
+        experienceDateInput.type = 'text';
+        experienceDateInput.setAttribute('placeholder', placeholder);
+        experienceDateInput.dataset.enhancedPicker = 'date';
+
+        const options = {
+            altInput: true,
+            allowInput: true,
+            disableMobile: true,
+            altFormat: 'F j, Y',
+            dateFormat: 'Y-m-d',
+            minDate: 'today',
+            prevArrow: '‹',
+            nextArrow: '›',
+            onReady: (_, __, instance) => decorateAltInput(instance, mode === 'month' ? 'date' : 'date', placeholder),
+            onChange: (_, __, instance) => decorateAltInput(instance, mode === 'month' ? 'date' : 'date', placeholder)
+        };
+
+        if (appliedMode === 'month' && window.monthSelectPlugin) {
+            options.altFormat = 'F Y';
+            options.dateFormat = 'Y-m';
+            options.minDate = null;
+            options.plugins = [window.monthSelectPlugin({ shorthand: true, dateFormat: 'Y-m', altFormat: 'F Y' })];
+        }
+
+        experienceDatePicker = window.flatpickr(experienceDateInput, options);
+        decorateAltInput(experienceDatePicker, 'date', placeholder);
+        experienceDatePickerMode = appliedMode;
+        return experienceDatePicker;
+    };
+
+    const initializeExperienceTimePicker = () => {
+        if (!window.flatpickr || !experienceTimeInput) return null;
+
+        if (experienceTimePicker) {
+            experienceTimePicker.destroy();
+            experienceTimePicker = null;
+        }
+
+        const placeholder = experienceTimeInput.getAttribute('placeholder') || 'Select time';
+        experienceTimeInput.type = 'text';
+        experienceTimeInput.dataset.enhancedPicker = 'time';
+
+        experienceTimePicker = window.flatpickr(experienceTimeInput, {
+            enableTime: true,
+            noCalendar: true,
+            altInput: true,
+            altFormat: 'h:i K',
+            dateFormat: 'H:i',
+            minuteIncrement: 15,
+            disableMobile: true,
+            onReady: (_, __, instance) => decorateAltInput(instance, 'time', placeholder),
+            onChange: (_, __, instance) => decorateAltInput(instance, 'time', placeholder)
+        });
+        decorateAltInput(experienceTimePicker, 'time', placeholder);
+        return experienceTimePicker;
+    };
+
+    const initializeMoveInPicker = () => {
+        if (!window.flatpickr || !moveInDateInput) return null;
+
+        if (moveInDatePicker) {
+            moveInDatePicker.destroy();
+            moveInDatePicker = null;
+        }
+
+        const placeholder = moveInDateInput.getAttribute('placeholder') || 'Select move-in date';
+        moveInDateInput.type = 'text';
+        moveInDateInput.dataset.enhancedPicker = 'date';
+
+        moveInDatePicker = window.flatpickr(moveInDateInput, {
+            altInput: true,
+            altFormat: 'F j, Y',
+            dateFormat: 'Y-m-d',
+            disableMobile: true,
+            defaultDate: getFutureDate(30),
+            minDate: 'today',
+            prevArrow: '‹',
+            nextArrow: '›',
+            onReady: (_, __, instance) => decorateAltInput(instance, 'date', placeholder),
+            onChange: (_, __, instance) => decorateAltInput(instance, 'date', placeholder)
+        });
+        decorateAltInput(moveInDatePicker, 'date', placeholder);
+        return moveInDatePicker;
+    };
+
+    const initializeLuxuryPickers = () => {
+        if (window.flatpickr) {
+            setupExperienceDatePicker('date');
+            initializeExperienceTimePicker();
+            initializeMoveInPicker();
+        } else {
+            if (experienceDateInput) {
+                experienceDateInput.type = 'date';
+                experienceDateInput.min = new Date().toISOString().split('T')[0];
+            }
+            if (experienceTimeInput) {
+                experienceTimeInput.type = 'time';
+            }
+            if (moveInDateInput) {
+                moveInDateInput.type = 'date';
+                moveInDateInput.value = getFutureDate(30).toISOString().split('T')[0];
+            }
+        }
+    };
+
+    initializeLuxuryPickers();
 
     const portfolioResidences = [
         {
@@ -556,16 +717,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const cardExpiryInput = document.getElementById('cardExpiry');
         const cardCvcInput = document.getElementById('cardCvc');
         const billingZipInput = document.getElementById('billingZip');
-        const moveInInput = document.getElementById('applicationMoveIn');
+        const moveInInput = moveInDateInput;
 
         let leaseCurrentStep = 0;
         let leaseActiveProperty = null;
         let mockPaymentAuthorized = false;
 
         const setDefaultMoveIn = () => {
+            if (moveInDatePicker) {
+                moveInDatePicker.setDate(getFutureDate(30), true);
+                return;
+            }
             if (!moveInInput) return;
-            const defaultDate = new Date();
-            defaultDate.setDate(defaultDate.getDate() + 30);
+            const defaultDate = getFutureDate(30);
             moveInInput.value = defaultDate.toISOString().split('T')[0];
         };
 
@@ -1417,8 +1581,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const residenceNotesInput = document.getElementById('residenceNotes');
         const preferenceInputs = Array.from(bookingModal.querySelectorAll('input[name="residencePreference"]'));
         const tourInputs = tourTypeGroup ? Array.from(tourTypeGroup.querySelectorAll('input[name="tourType"]')) : [];
-        const dateInput = document.getElementById('experienceDate');
-        const timeInput = document.getElementById('experienceTime');
+        const dateInput = experienceDateInput;
+        const timeInput = experienceTimeInput;
         const guestSelect = document.getElementById('guestCount');
 
         let currentStep = 0;
@@ -1609,10 +1773,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 items.push({ label: 'Experience type', value: selectedTour });
             }
             if (dateValue) {
-                items.push({ label: config.dateLabel, value: formatDisplayDate(dateValue, config.dateType) });
+                const dateDisplay = experienceDatePicker && experienceDatePicker.altInput && experienceDatePicker.altInput.value
+                    ? experienceDatePicker.altInput.value
+                    : formatDisplayDate(dateValue, config.dateType);
+                items.push({ label: config.dateLabel, value: dateDisplay });
             }
             if (config.showTimeField !== false && timeValue) {
-                items.push({ label: config.timeLabel, value: timeValue });
+                const timeDisplay = experienceTimePicker && experienceTimePicker.altInput && experienceTimePicker.altInput.value
+                    ? experienceTimePicker.altInput.value
+                    : formatDisplayTime(timeValue);
+                items.push({ label: config.timeLabel, value: timeDisplay });
             }
             if (guestValue) {
                 items.push({ label: 'Guests', value: guestValue });
@@ -1680,16 +1850,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 experienceDateLabel.textContent = config.dateLabel;
             }
             if (dateInput) {
-                dateInput.type = config.dateType || 'date';
-                dateInput.value = '';
-                if (dateInput.type === 'date') {
-                    const today = new Date().toISOString().split('T')[0];
-                    dateInput.min = today;
-                } else {
-                    dateInput.removeAttribute('min');
-                }
+                const desiredMode = config.dateType || 'date';
                 dateInput.required = !!config.dateRequired;
                 dateInput.classList.remove('field-error');
+                dateInput.value = '';
+
+                if (experienceDatePicker) {
+                    if (experienceDatePickerMode !== desiredMode) {
+                        setupExperienceDatePicker(desiredMode);
+                    } else {
+                        experienceDatePicker.clear();
+                        experienceDatePicker.set('minDate', experienceDatePickerMode === 'date' ? 'today' : null);
+                        decorateAltInput(
+                            experienceDatePicker,
+                            'date',
+                            experienceDatePickerMode === 'month' ? 'Select month' : 'Select date'
+                        );
+                    }
+                } else if (window.flatpickr) {
+                    setupExperienceDatePicker(desiredMode);
+                } else {
+                    dateInput.type = desiredMode;
+                    if (desiredMode === 'date') {
+                        const today = new Date().toISOString().split('T')[0];
+                        dateInput.min = today;
+                    } else {
+                        dateInput.removeAttribute('min');
+                    }
+                }
+
+                const activeMode = window.flatpickr
+                    ? (experienceDatePicker ? experienceDatePickerMode : desiredMode)
+                    : (desiredMode === 'month' ? 'month' : desiredMode);
+                const placeholder = activeMode === 'month' ? 'Select month' : 'Select date';
+
+                if (experienceDatePicker && experienceDatePicker.altInput) {
+                    experienceDatePicker.altInput.placeholder = placeholder;
+                } else {
+                    dateInput.setAttribute('placeholder', placeholder);
+                }
             }
             if (dateGroup) {
                 dateGroup.hidden = false;
@@ -1705,6 +1904,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 timeInput.value = '';
                 timeInput.required = config.showTimeField !== false && !!config.timeRequired;
                 timeInput.classList.remove('field-error');
+                if (experienceTimePicker) {
+                    experienceTimePicker.clear();
+                    if (experienceTimePicker.altInput) {
+                        experienceTimePicker.altInput.placeholder = config.showTimeField === false
+                            ? 'Select time'
+                            : (timeInput.getAttribute('placeholder') || 'Select time');
+                    }
+                } else if (!window.flatpickr) {
+                    timeInput.type = 'time';
+                }
             }
 
             residenceNotesInput && (residenceNotesInput.value = residenceName || '');
@@ -1719,6 +1928,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const resetFlow = () => {
             bookingForm.reset();
+            if (experienceDatePicker) {
+                experienceDatePicker.clear();
+            }
+            if (experienceTimePicker) {
+                experienceTimePicker.clear();
+            }
             clearFieldErrors();
             setPreference('Open to Options');
             tourInputs.forEach((input, index) => {
