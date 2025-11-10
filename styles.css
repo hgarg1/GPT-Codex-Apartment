@@ -2898,7 +2898,8 @@ img {
 .booking-modal {
     position: fixed;
     inset: 0;
-    background: rgba(15, 26, 44, 0.6);
+    background: rgba(15, 26, 44, 0.64);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2924,6 +2925,7 @@ img {
     flex-direction: column;
     border-radius: calc(var(--border-radius) + 10px);
     box-shadow: var(--shadow-elevated);
+    border: 1px solid rgba(15, 26, 44, 0.08);
     overflow: hidden;
     transform: translateY(24px);
     transition: transform 0.35s ease;
@@ -2957,7 +2959,7 @@ img {
 
 .booking-modal__header {
     padding: 2.8rem 2.8rem 1.8rem;
-    background: linear-gradient(135deg, rgba(42, 110, 242, 0.12), rgba(15, 26, 44, 0.12));
+    background: linear-gradient(135deg, rgba(42, 110, 242, 0.08), rgba(15, 26, 44, 0.06));
     border-bottom: 1px solid rgba(15, 26, 44, 0.08);
 }
 
