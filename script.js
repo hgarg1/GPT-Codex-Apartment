@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const portfolioCount = document.getElementById('portfolioCount');
     const portfolioFilters = document.querySelectorAll('.portfolio-filter');
     const leasingGrid = document.getElementById('leasingGrid');
+    const leasingSection = document.getElementById('leasing');
     const leaseFilters = document.querySelectorAll('.lease-filter');
     const leaseSortSelect = document.getElementById('leaseSort');
     const leaseModal = document.getElementById('leaseModal');
@@ -34,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const accountProperties = document.getElementById('accountProperties');
     const accountReset = document.getElementById('accountReset');
     let openLeaseApplication = () => {};
+    let syncPortfolioToLeasing = null;
 
     const formatCurrency = (value) => {
         try {
@@ -345,8 +347,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
+    const signatureAliases = {
+        skyline: 'sky',
+        sky: 'sky',
+        wellness: 'wellness',
+        heritage: 'heritage',
+        resort: 'resort'
+    };
+
     if (portfolioGrid) {
         let activePortfolioFilter = "all";
+
+        const attachPortfolioCtas = () => {
+            const ctas = portfolioGrid.querySelectorAll('.portfolio-card__cta');
+            ctas.forEach(button => {
+                button.addEventListener('click', () => {
+                    const signature = button.dataset.portfolioSignature || 'all';
+                    if (typeof syncPortfolioToLeasing === 'function') {
+                        syncPortfolioToLeasing(signature);
+                    } else {
+                        leasingSection && leasingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        };
 
         const renderPortfolio = (filter = "all") => {
             activePortfolioFilter = filter;
@@ -373,9 +397,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             <li>${item.size} sq ft avg.</li>
                             <li>${item.signatureLabel} Signature</li>
                         </ul>
+                        <div class="portfolio-card__footer">
+                            <button class="portfolio-card__cta" data-portfolio-signature="${item.signature}">Explore leasing</button>
+                        </div>
                     </div>
                 </article>
             `).join("");
+
+            attachPortfolioCtas();
         };
 
         portfolioFilters.forEach(button => {
@@ -472,6 +501,35 @@ document.addEventListener('DOMContentLoaded', () => {
         leaseSortSelect && leaseSortSelect.addEventListener('change', () => renderLeasing());
 
         renderLeasing();
+
+        const highlightFirstLease = () => {
+            requestAnimationFrame(() => {
+                const firstCard = leasingGrid.querySelector('.lease-card');
+                if (!firstCard) return;
+                firstCard.classList.add('is-highlighted');
+                const focusTarget = firstCard.querySelector('.lease-cta');
+                focusTarget && focusTarget.focus({ preventScroll: true });
+                setTimeout(() => {
+                    firstCard.classList.remove('is-highlighted');
+                }, 1600);
+            });
+        };
+
+        syncPortfolioToLeasing = (signature) => {
+            const normalized = signatureAliases[signature] || signature || 'all';
+            const targetButton = Array.from(leaseFilters).find(btn => (btn.dataset.leaseFilter || 'all') === normalized);
+            if (targetButton) {
+                activeLeaseFilter = normalized;
+                leaseFilters.forEach(btn => btn.classList.toggle('active', btn === targetButton));
+            } else {
+                activeLeaseFilter = 'all';
+                leaseFilters.forEach(btn => btn.classList.toggle('active', (btn.dataset.leaseFilter || 'all') === 'all'));
+            }
+
+            renderLeasing();
+            leasingSection && leasingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            highlightFirstLease();
+        };
     }
 
     if (leaseModal && leaseForm) {
