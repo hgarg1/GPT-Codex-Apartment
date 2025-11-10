@@ -827,6 +827,199 @@ document.addEventListener('DOMContentLoaded', () => {
         resetFlow();
     }
 
+    // Team directory filtering
+    const staffSection = document.querySelector('[data-staff-section]');
+    if (staffSection) {
+        const staffList = staffSection.querySelector('[data-staff-list]');
+        const staffCount = staffSection.querySelector('[data-staff-count]');
+        const emptyState = staffSection.querySelector('[data-staff-empty]');
+        const searchInput = staffSection.querySelector('#staffSearch');
+        const sortSelect = staffSection.querySelector('#staffSort');
+        const filterForm = staffSection.querySelector('#teamFilters');
+        const inlineReset = staffSection.querySelector('.team-reset--inline');
+        const disciplineFilters = Array.from(staffSection.querySelectorAll('input[name="teamDiscipline"]'));
+        const expertiseFilters = Array.from(staffSection.querySelectorAll('input[name="teamExpertise"]'));
+        const availabilityFilters = Array.from(staffSection.querySelectorAll('input[name="teamAvailability"]'));
+        const languageFilters = Array.from(staffSection.querySelectorAll('input[name="teamLanguage"]'));
+
+        const parseValues = (value = '') => value.split(',').map(item => item.trim().toLowerCase()).filter(Boolean);
+
+        const staffData = Array.from(staffSection.querySelectorAll('.team-member')).map(element => {
+            const name = (element.querySelector('h3')?.textContent || '').trim();
+            const role = (element.querySelector('.team-role')?.textContent || '').trim();
+            const bio = (element.querySelector('.team-bio')?.textContent || '').trim();
+            const highlights = Array.from(element.querySelectorAll('.team-highlights li'))
+                .map(item => item.textContent?.trim() || '')
+                .join(' ');
+            return {
+                element,
+                name,
+                role,
+                bio,
+                searchIndex: `${name} ${role} ${bio} ${highlights}`.toLowerCase(),
+                team: parseValues(element.dataset.team),
+                expertise: parseValues(element.dataset.expertise),
+                languages: parseValues(element.dataset.languages),
+                availability: parseValues(element.dataset.availability),
+                tenure: Number(element.dataset.tenure || 0),
+                specialtyDepth: Number(element.dataset.specialtyDepth || 0)
+            };
+        });
+
+        const updateDirectory = () => {
+            const query = (searchInput?.value || '').trim().toLowerCase();
+            const selectedDisciplines = disciplineFilters.filter(input => input.checked).map(input => input.value);
+            const selectedExpertise = expertiseFilters.filter(input => input.checked).map(input => input.value);
+            const selectedAvailability = availabilityFilters.filter(input => input.checked).map(input => input.value);
+            const selectedLanguages = languageFilters.filter(input => input.checked).map(input => input.value);
+            const sortValue = sortSelect ? sortSelect.value : 'experience';
+
+            let filtered = staffData.filter(member => {
+                const matchesQuery = !query || member.searchIndex.includes(query);
+                const matchesDiscipline = !selectedDisciplines.length || selectedDisciplines.some(value => member.team.includes(value));
+                const matchesExpertise = !selectedExpertise.length || selectedExpertise.every(value => member.expertise.includes(value));
+                const matchesAvailability = !selectedAvailability.length || selectedAvailability.every(value => member.availability.includes(value));
+                const matchesLanguages = !selectedLanguages.length || selectedLanguages.every(value => member.languages.includes(value));
+                return matchesQuery && matchesDiscipline && matchesExpertise && matchesAvailability && matchesLanguages;
+            });
+
+            const sorters = {
+                experience: (a, b) => (b.tenure - a.tenure) || a.name.localeCompare(b.name),
+                alphabetical: (a, b) => a.name.localeCompare(b.name),
+                specialty: (a, b) => (b.specialtyDepth - a.specialtyDepth) || (b.expertise.length - a.expertise.length) || a.name.localeCompare(b.name)
+            };
+
+            const sorter = sorters[sortValue] || sorters.experience;
+            filtered = filtered.sort(sorter);
+
+            staffData.forEach(member => {
+                const isVisible = filtered.includes(member);
+                member.element.classList.toggle('is-hidden', !isVisible);
+                if (isVisible) {
+                    member.element.removeAttribute('hidden');
+                } else {
+                    member.element.setAttribute('hidden', '');
+                }
+            });
+
+            if (staffList) {
+                filtered.forEach(member => staffList.appendChild(member.element));
+            }
+
+            if (staffCount) {
+                const total = staffData.length;
+                const visible = filtered.length;
+                const label = visible === 1 ? 'specialist' : 'specialists';
+                staffCount.textContent = `Showing ${visible} of ${total} ${label}`;
+            }
+
+            if (emptyState) {
+                if (!filtered.length) {
+                    emptyState.hidden = false;
+                    emptyState.removeAttribute('hidden');
+                } else {
+                    emptyState.hidden = true;
+                    emptyState.setAttribute('hidden', '');
+                }
+            }
+        };
+
+        const filterInputs = [
+            ...disciplineFilters,
+            ...expertiseFilters,
+            ...availabilityFilters,
+            ...languageFilters
+        ];
+
+        searchInput && searchInput.addEventListener('input', () => updateDirectory());
+        filterInputs.forEach(input => {
+            input.addEventListener('change', updateDirectory);
+        });
+        sortSelect && sortSelect.addEventListener('change', updateDirectory);
+        filterForm && filterForm.addEventListener('reset', () => {
+            window.requestAnimationFrame(updateDirectory);
+        });
+        inlineReset && inlineReset.addEventListener('click', () => {
+            if (filterForm) {
+                filterForm.reset();
+                window.requestAnimationFrame(updateDirectory);
+            }
+        });
+
+        updateDirectory();
+    }
+
+    // Policy enhancements (table of contents + accordions)
+    const policyPage = document.querySelector('.policy-page');
+    if (policyPage) {
+        const toc = document.querySelector('[data-policy-toc]');
+        if (toc) {
+            const tocLinks = Array.from(toc.querySelectorAll('a[href^="#"]'));
+            const observedSections = tocLinks
+                .map(link => {
+                    const id = link.getAttribute('href')?.substring(1);
+                    if (!id) return null;
+                    const section = document.getElementById(id);
+                    if (section) {
+                        link.addEventListener('click', event => {
+                            event.preventDefault();
+                            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        });
+                    }
+                    return section;
+                })
+                .filter(section => section instanceof HTMLElement);
+
+            const setActiveLink = (id) => {
+                tocLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    const isActive = href === `#${id}`;
+                    link.classList.toggle('is-active', isActive);
+                    if (isActive) {
+                        link.setAttribute('aria-current', 'location');
+                    } else {
+                        link.removeAttribute('aria-current');
+                    }
+                });
+            };
+
+            if (observedSections.length) {
+                const tocObserver = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setActiveLink(entry.target.id);
+                        }
+                    });
+                }, { threshold: 0.45, rootMargin: '-20% 0px -50% 0px' });
+
+                observedSections.forEach(section => tocObserver.observe(section));
+            }
+        }
+
+        const accordionItems = Array.from(document.querySelectorAll('[data-policy-accordion] .policy-accordion__item'));
+        accordionItems.forEach(item => {
+            const trigger = item.querySelector('button');
+            const content = item.querySelector('.policy-accordion__content');
+            if (!trigger || !content) return;
+
+            if (!trigger.hasAttribute('aria-expanded')) {
+                trigger.setAttribute('aria-expanded', content.hasAttribute('hidden') ? 'false' : 'true');
+            }
+
+            trigger.addEventListener('click', () => {
+                const expanded = trigger.getAttribute('aria-expanded') === 'true';
+                trigger.setAttribute('aria-expanded', String(!expanded));
+                if (expanded) {
+                    content.setAttribute('hidden', '');
+                    item.classList.remove('is-open');
+                } else {
+                    content.removeAttribute('hidden');
+                    item.classList.add('is-open');
+                }
+            });
+        });
+    }
+
     // Contact form submission
     const contactForm = document.getElementById('contactForm');
     contactForm && contactForm.addEventListener('submit', event => {

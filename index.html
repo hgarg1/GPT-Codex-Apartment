@@ -24,6 +24,7 @@
                 <li><a href="#highlights">Highlights</a></li>
                 <li><a href="#availability">Availability</a></li>
                 <li><a href="#amenities">Amenities</a></li>
+                <li><a href="#team">Team</a></li>
                 <li><a href="#neighborhood">Neighborhood</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -306,6 +307,263 @@
                     <p class="testimonial-quote">“Hosting friends on the rooftop solarium while the sun sets over the skyline is an experience that never gets old. Codex is truly a lifestyle upgrade.”</p>
                     <p class="testimonial-author">— Renée C., Creative Director</p>
                 </article>
+            </div>
+        </section>
+
+        <section id="team" class="section section--dark team-section" data-staff-section>
+            <div class="section-header" data-animate>
+                <p class="eyebrow">Resident Experience Team</p>
+                <h2 class="section-title">Meet the Codex Collective</h2>
+                <p class="section-text">Our multidisciplinary experts choreograph every moment at Codex&mdash;from move-in to milestone celebrations. Filter to discover the specialists who will curate your residence.</p>
+            </div>
+
+            <form id="teamFilters" class="team-filters" aria-label="Filter Codex staff" data-animate>
+                <div class="team-filters__row">
+                    <label class="team-filter team-filter--search" for="staffSearch">
+                        <span class="team-filter__label">Search team</span>
+                        <input type="search" id="staffSearch" name="staffSearch" placeholder="Search by name, role, or expertise">
+                    </label>
+                    <div class="team-filter team-filter--sort">
+                        <label class="team-filter__label" for="staffSort">Sort by</label>
+                        <select id="staffSort" name="staffSort">
+                            <option value="experience">Tenure (High to Low)</option>
+                            <option value="alphabetical">Alphabetical</option>
+                            <option value="specialty">Specialty Depth</option>
+                        </select>
+                        <button type="reset" class="team-reset">Reset filters</button>
+                    </div>
+                </div>
+                <div class="team-filters__grid">
+                    <fieldset class="team-filter-group">
+                        <legend>Discipline focus</legend>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamDiscipline" value="concierge">
+                            <span>Concierge</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamDiscipline" value="leasing">
+                            <span>Leasing Atelier</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamDiscipline" value="design">
+                            <span>Design Studio</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamDiscipline" value="wellness">
+                            <span>Wellness</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamDiscipline" value="experience">
+                            <span>Experience Innovation</span>
+                        </label>
+                    </fieldset>
+                    <fieldset class="team-filter-group">
+                        <legend>Expertise</legend>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamExpertise" value="design">
+                            <span>Interior Design</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamExpertise" value="technology">
+                            <span>Smart Living</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamExpertise" value="wellness">
+                            <span>Wellness Rituals</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamExpertise" value="events">
+                            <span>Event Programming</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamExpertise" value="culinary">
+                            <span>Culinary Partnerships</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamExpertise" value="finance">
+                            <span>Financial Planning</span>
+                        </label>
+                    </fieldset>
+                    <fieldset class="team-filter-group">
+                        <legend>Availability</legend>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamAvailability" value="in-residence">
+                            <span>In-Residence</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamAvailability" value="virtual">
+                            <span>Virtual</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamAvailability" value="weekend">
+                            <span>Weekends</span>
+                        </label>
+                    </fieldset>
+                    <fieldset class="team-filter-group">
+                        <legend>Languages</legend>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamLanguage" value="english">
+                            <span>English</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamLanguage" value="spanish">
+                            <span>Spanish</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamLanguage" value="french">
+                            <span>French</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamLanguage" value="mandarin">
+                            <span>Mandarin</span>
+                        </label>
+                        <label class="team-chip">
+                            <input type="checkbox" name="teamLanguage" value="japanese">
+                            <span>Japanese</span>
+                        </label>
+                    </fieldset>
+                </div>
+            </form>
+
+            <div class="team-count" data-staff-count data-animate>Showing 0 specialists</div>
+
+            <div class="team-grid" data-staff-list data-animate>
+                <article class="team-member" data-team="concierge" data-expertise="hospitality,events,wellness" data-languages="english,french,italian" data-availability="in-residence,virtual,weekend" data-tenure="12" data-specialty-depth="5">
+                    <div class="team-member__media" aria-hidden="true">
+                        <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=800&q=80" alt="Portrait of Elise Navarro" loading="lazy">
+                    </div>
+                    <div class="team-member__content">
+                        <div class="team-member__header">
+                            <h3>Elise Navarro</h3>
+                            <p class="team-role">Chief Concierge &amp; Lifestyle Director</p>
+                        </div>
+                        <p class="team-bio">Elise orchestrates bespoke itineraries and signature resident happenings, drawing on a decade at Forbes Five-Star hotels.</p>
+                        <ul class="team-highlights">
+                            <li>Curates monthly cultural residencies and private gallery previews.</li>
+                            <li>Certified WELL AP with a focus on restorative rituals.</li>
+                        </ul>
+                        <div class="team-tags">
+                            <span class="team-tag">Speaks: English, French, Italian</span>
+                            <span class="team-tag">Available: In-residence &amp; Virtual</span>
+                            <span class="team-tag">Specialties: Hospitality, Events, Wellness</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="team-member" data-team="leasing" data-expertise="finance,negotiation,technology" data-languages="english,spanish" data-availability="in-residence,virtual" data-tenure="9" data-specialty-depth="4">
+                    <div class="team-member__media" aria-hidden="true">
+                        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80" alt="Portrait of Marcus Hill" loading="lazy">
+                    </div>
+                    <div class="team-member__content">
+                        <div class="team-member__header">
+                            <h3>Marcus Hill</h3>
+                            <p class="team-role">Director of Leasing Strategy</p>
+                        </div>
+                        <p class="team-bio">Marcus pairs data-driven insights with concierge storytelling to match residents with the ideal floor plan.</p>
+                        <ul class="team-highlights">
+                            <li>Advises on bespoke lease structures and investment planning.</li>
+                            <li>Former broker of the year for luxury adaptive reuse properties.</li>
+                        </ul>
+                        <div class="team-tags">
+                            <span class="team-tag">Speaks: English, Spanish</span>
+                            <span class="team-tag">Available: In-residence &amp; Virtual</span>
+                            <span class="team-tag">Specialties: Finance, Negotiation, Technology</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="team-member" data-team="design" data-expertise="design,art,culinary" data-languages="english,japanese" data-availability="in-residence,virtual,weekend" data-tenure="7" data-specialty-depth="5">
+                    <div class="team-member__media" aria-hidden="true">
+                        <img src="https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?auto=format&fit=crop&w=800&q=80" alt="Portrait of Sloane Igarashi" loading="lazy">
+                    </div>
+                    <div class="team-member__content">
+                        <div class="team-member__header">
+                            <h3>Sloane Igarashi</h3>
+                            <p class="team-role">Design &amp; Curation Lead</p>
+                        </div>
+                        <p class="team-bio">Sloane collaborates with residents to layer bespoke furnishings, art, and culinary experiences tailored to each home.</p>
+                        <ul class="team-highlights">
+                            <li>Alumni of Maison&amp;Objet Rising Talent program.</li>
+                            <li>Partners with local artisans for limited-edition installations.</li>
+                        </ul>
+                        <div class="team-tags">
+                            <span class="team-tag">Speaks: English, Japanese</span>
+                            <span class="team-tag">Available: In-residence, Virtual &amp; Weekends</span>
+                            <span class="team-tag">Specialties: Design, Art, Culinary</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="team-member" data-team="experience" data-expertise="technology,events" data-languages="english,mandarin" data-availability="in-residence,virtual" data-tenure="6" data-specialty-depth="3">
+                    <div class="team-member__media" aria-hidden="true">
+                        <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80" alt="Portrait of Priya Raman" loading="lazy">
+                    </div>
+                    <div class="team-member__content">
+                        <div class="team-member__header">
+                            <h3>Priya Raman</h3>
+                            <p class="team-role">Technology &amp; Smart Living Manager</p>
+                        </div>
+                        <p class="team-bio">Priya engineers the resident app ecosystem and orchestrates smart-home installations that elevate daily rituals.</p>
+                        <ul class="team-highlights">
+                            <li>Certified KNX integrator &amp; LEED Green Associate.</li>
+                            <li>Hosts quarterly digital lifestyle workshops.</li>
+                        </ul>
+                        <div class="team-tags">
+                            <span class="team-tag">Speaks: English, Mandarin</span>
+                            <span class="team-tag">Available: In-residence &amp; Virtual</span>
+                            <span class="team-tag">Specialties: Technology, Events</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="team-member" data-team="wellness" data-expertise="wellness,events" data-languages="english,spanish" data-availability="in-residence,weekend" data-tenure="8" data-specialty-depth="4">
+                    <div class="team-member__media" aria-hidden="true">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" alt="Portrait of Dr. Javier Montes" loading="lazy">
+                    </div>
+                    <div class="team-member__content">
+                        <div class="team-member__header">
+                            <h3>Dr. Javier Montes</h3>
+                            <p class="team-role">Director of Wellness Partnerships</p>
+                        </div>
+                        <p class="team-bio">Javier integrates evidence-based wellness programming, from personalized movement coaching to restorative spa experiences.</p>
+                        <ul class="team-highlights">
+                            <li>Board-certified in integrative medicine and mindful leadership.</li>
+                            <li>Designs seasonal wellness residencies with global practitioners.</li>
+                        </ul>
+                        <div class="team-tags">
+                            <span class="team-tag">Speaks: English, Spanish</span>
+                            <span class="team-tag">Available: In-residence &amp; Weekends</span>
+                            <span class="team-tag">Specialties: Wellness, Events</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="team-member" data-team="experience" data-expertise="events,culinary,wellness" data-languages="english,mandarin" data-availability="in-residence,virtual,weekend" data-tenure="5" data-specialty-depth="4">
+                    <div class="team-member__media" aria-hidden="true">
+                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80" alt="Portrait of Lian Chen" loading="lazy">
+                    </div>
+                    <div class="team-member__content">
+                        <div class="team-member__header">
+                            <h3>Lian Chen</h3>
+                            <p class="team-role">Resident Community Curator</p>
+                        </div>
+                        <p class="team-bio">Lian choreographs resident gatherings, culinary collaborations, and philanthropic initiatives that foster belonging.</p>
+                        <ul class="team-highlights">
+                            <li>Leads Codex Table, our chef-in-residence dining series.</li>
+                            <li>Coordinates wellness retreats and community impact salons.</li>
+                        </ul>
+                        <div class="team-tags">
+                            <span class="team-tag">Speaks: English, Mandarin</span>
+                            <span class="team-tag">Available: In-residence, Virtual &amp; Weekends</span>
+                            <span class="team-tag">Specialties: Events, Culinary, Wellness</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="team-empty" data-staff-empty hidden>
+                <p>No team members match your current filters. Try broadening your selections or resetting the filters.</p>
+                <button type="button" class="team-reset team-reset--inline">Reset filters</button>
             </div>
         </section>
 
