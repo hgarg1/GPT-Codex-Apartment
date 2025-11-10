@@ -42,8 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const portalAuthResidentName = document.getElementById('portalAuthResidentName');
     const portalAuthResidentEmail = document.getElementById('portalAuthResidentEmail');
     const authToggleButtons = document.querySelectorAll('[data-auth-view]');
-    const signupCard = document.getElementById('signupCard');
-    const loginCard = document.getElementById('loginCard');
     const signupForm = document.getElementById('signupForm');
     const loginForm = document.getElementById('loginForm');
     const portalAuthSignOut = document.getElementById('portalAuthSignOut');
@@ -141,8 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const setAuthView = (view = 'signup') => {
         activeAuthView = view;
         const showSignup = view === 'signup';
-        toggleHidden(signupCard, !showSignup);
-        toggleHidden(loginCard, showSignup);
         toggleHidden(signupForm, !showSignup);
         toggleHidden(loginForm, showSignup);
         authToggleButtons.forEach(button => {
@@ -151,20 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.toggle('is-active', isActive);
             button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
         });
-        if (portalAuthWrapper) {
-            portalAuthWrapper.dataset.view = view;
-        }
     };
 
     const updateAuthCardState = (account) => {
         if (!portalAuthWrapper) return;
         const isAuthenticated = Boolean(account);
         portalAuthWrapper.dataset.state = isAuthenticated ? 'authenticated' : 'form';
-        if (isAuthenticated) {
-            portalAuthWrapper.dataset.view = 'success';
-        } else {
-            portalAuthWrapper.dataset.view = activeAuthView;
-        }
         toggleHidden(portalAuthForms, isAuthenticated);
         toggleHidden(portalAuthSuccess, !isAuthenticated);
         if (portalAuthResidentName) {
