@@ -403,32 +403,64 @@ img {
     text-transform: uppercase;
     letter-spacing: 0.3em;
     font-size: 0.75rem;
-    color: var(--primary);
+    color: #0d2f7a;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(42, 110, 242, 0.14);
 }
 
 .section--dark .eyebrow {
-    color: var(--accent);
+    color: #111a2f;
+    background: rgba(246, 195, 67, 0.85);
 }
 
 .section-title {
     font-family: 'Playfair Display', serif;
     font-size: clamp(2rem, 3.5vw, 2.8rem);
     margin: 0.8rem 0;
-    color: #061634;
+    color: #ffffff;
     font-weight: 700;
     line-height: 1.2;
+    letter-spacing: 0.01em;
+    position: relative;
+    display: inline-block;
+    padding: 0.45rem 1.4rem;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(11, 37, 92, 0.95), rgba(42, 110, 242, 0.9));
+    box-shadow: 0 16px 40px rgba(11, 37, 92, 0.35);
+    z-index: 0;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: calc(16px + 6px);
+    background: linear-gradient(135deg, rgba(246, 195, 67, 0.8), rgba(42, 110, 242, 0.7));
+    opacity: 0.8;
+    filter: blur(12px);
+    z-index: -1;
 }
 
 .section--dark .section-title {
-    color: #f9fbff;
+    background: linear-gradient(135deg, rgba(7, 20, 48, 0.95), rgba(22, 68, 167, 0.95));
+    box-shadow: 0 18px 45px rgba(5, 12, 30, 0.55);
+}
+
+.section--dark .section-title::after {
+    background: linear-gradient(135deg, rgba(246, 195, 67, 0.95), rgba(255, 255, 255, 0.85));
 }
 
 .section-text {
-    color: #2c3852;
+    color: #0f1f3f;
+    font-size: 1.05rem;
 }
 
 .section--dark .section-text {
-    color: rgba(244, 246, 251, 0.82);
+    color: rgba(255, 255, 255, 0.88);
 }
 
 /* =========================
