@@ -673,6 +673,86 @@
                 <p class="section-text">Complete an application and your residence will appear here instantly. Manage move-in milestones, concierge introductions, and lease documentation from a single hub.</p>
             </div>
             <div class="portal-grid" data-animate>
+                <section class="portal-access" aria-live="polite">
+                    <header class="portal-access__intro">
+                        <h3 class="portal-card__title portal-access__title">Resident Access</h3>
+                        <p class="portal-card__subtitle portal-access__subtitle">Sign in to manage your residence or create a new profile in seconds.</p>
+                        <div class="portal-auth-toggle" role="group" aria-label="Resident portal access">
+                            <button type="button" class="portal-auth-toggle__button is-active" data-auth-view="signup" aria-pressed="true">Create Account</button>
+                            <button type="button" class="portal-auth-toggle__button" data-auth-view="login" aria-pressed="false">Log In</button>
+                        </div>
+                    </header>
+                    <div id="portalAuthWrapper" class="portal-auth-wrapper" data-state="form" data-view="signup">
+                        <div id="portalAuthForms" class="portal-auth-panels">
+                            <article id="signupCard" class="portal-card portal-card--auth" data-auth-panel="signup">
+                                <h4 class="portal-auth-panel__title">Create your Codex account</h4>
+                                <form id="signupForm" class="portal-form" novalidate autocomplete="off">
+                                    <div class="portal-form__grid">
+                                        <div class="portal-form__field">
+                                            <label for="signupFirstName">First name</label>
+                                            <input type="text" id="signupFirstName" name="firstName" autocomplete="given-name" required>
+                                        </div>
+                                        <div class="portal-form__field">
+                                            <label for="signupLastName">Last name</label>
+                                            <input type="text" id="signupLastName" name="lastName" autocomplete="family-name" required>
+                                        </div>
+                                        <div class="portal-form__field">
+                                            <label for="signupEmail">Email</label>
+                                            <input type="email" id="signupEmail" name="email" autocomplete="email" required>
+                                        </div>
+                                        <div class="portal-form__field">
+                                            <label for="signupPhone">Phone</label>
+                                            <input type="tel" id="signupPhone" name="phone" autocomplete="tel" placeholder="(212) 555-1234">
+                                        </div>
+                                        <div class="portal-form__field">
+                                            <label for="signupUnit">Residence (optional)</label>
+                                            <input type="text" id="signupUnit" name="unit" placeholder="e.g., 20C">
+                                        </div>
+                                        <div class="portal-form__field">
+                                            <label for="signupPassword">Create password</label>
+                                            <input type="password" id="signupPassword" name="password" minlength="8" autocomplete="new-password" required placeholder="Minimum 8 characters">
+                                        </div>
+                                        <div class="portal-form__field">
+                                            <label for="signupConfirm">Confirm password</label>
+                                            <input type="password" id="signupConfirm" name="confirmPassword" minlength="8" autocomplete="new-password" required>
+                                        </div>
+                                    </div>
+                                    <div class="portal-form__actions">
+                                        <button type="submit" class="portal-form__submit" data-loading-label="Creating account…">Create my account</button>
+                                    </div>
+                                    <p class="portal-form__footnote">By creating an account you agree to receive concierge updates about your residence experience.</p>
+                                </form>
+                            </article>
+                            <article id="loginCard" class="portal-card portal-card--auth" data-auth-panel="login" hidden>
+                                <h4 class="portal-auth-panel__title">Welcome back</h4>
+                                <form id="loginForm" class="portal-form" novalidate hidden autocomplete="off">
+                                    <div class="portal-form__grid portal-form__grid--compact">
+                                        <div class="portal-form__field">
+                                            <label for="loginEmail">Email</label>
+                                            <input type="email" id="loginEmail" name="email" autocomplete="email" required>
+                                        </div>
+                                        <div class="portal-form__field">
+                                            <label for="loginPassword">Password</label>
+                                            <input type="password" id="loginPassword" name="password" autocomplete="current-password" required>
+                                        </div>
+                                    </div>
+                                    <div class="portal-form__actions">
+                                        <button type="submit" class="portal-form__submit" data-loading-label="Signing in…">Log in</button>
+                                    </div>
+                                    <p class="portal-form__footnote">Forgot your password? Contact the resident concierge and we'll get you back inside quickly.</p>
+                                </form>
+                            </article>
+                        </div>
+                        <article id="portalAuthSuccess" class="portal-card portal-card--auth portal-auth-success" data-auth-panel="success" hidden>
+                            <div class="portal-auth-success__icon" aria-hidden="true">✓</div>
+                            <p class="portal-auth-success__headline">You're signed in</p>
+                            <p class="portal-auth-success__copy">Welcome back, <span id="portalAuthResidentName">Codex Resident</span>.</p>
+                            <p class="portal-auth-success__copy">Primary email: <span id="portalAuthResidentEmail">—</span></p>
+                            <button type="button" class="portal-auth-signout" id="portalAuthSignOut">Sign out</button>
+                        </article>
+                    </div>
+                    <p id="portalAuthMessage" class="portal-auth-message" role="status" aria-live="polite" hidden></p>
+                </section>
                 <article class="portal-card" aria-live="polite">
                     <h3 class="portal-card__title">Account Overview</h3>
                     <p class="portal-card__subtitle" id="accountStatus">Create an account after your mock payment to unlock the resident experience.</p>

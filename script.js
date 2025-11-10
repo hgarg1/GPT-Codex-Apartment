@@ -34,6 +34,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const accountEmail = document.getElementById('accountEmail');
     const accountProperties = document.getElementById('accountProperties');
     const accountReset = document.getElementById('accountReset');
+    const portalAuthToggle = document.querySelector('.portal-auth-toggle');
+    const portalAuthWrapper = document.getElementById('portalAuthWrapper');
+    const portalAuthForms = document.getElementById('portalAuthForms');
+    const portalAuthSuccess = document.getElementById('portalAuthSuccess');
+    const portalAuthMessage = document.getElementById('portalAuthMessage');
+    const portalAuthResidentName = document.getElementById('portalAuthResidentName');
+    const portalAuthResidentEmail = document.getElementById('portalAuthResidentEmail');
+    const authToggleButtons = document.querySelectorAll('[data-auth-view]');
+    const signupCard = document.getElementById('signupCard');
+    const loginCard = document.getElementById('loginCard');
+    const signupForm = document.getElementById('signupForm');
+    const loginForm = document.getElementById('loginForm');
+    const portalAuthSignOut = document.getElementById('portalAuthSignOut');
     const experienceDateInput = document.getElementById('experienceDate');
     const experienceTimeInput = document.getElementById('experienceTime');
     const moveInDateInput = document.getElementById('applicationMoveIn');
@@ -44,6 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let experienceTimePicker = null;
     let moveInDatePicker = null;
     let experienceDatePickerMode = 'date';
+
+    const API_BASE_URL = '/api';
+
+    const toggleHidden = (element, shouldHide) => {
+        if (!element) return;
+        element.hidden = shouldHide;
+        if (shouldHide) {
+            element.setAttribute('hidden', '');
+        } else {
+            element.removeAttribute('hidden');
+        }
+    };
 
     const formatCurrency = (value) => {
         try {
@@ -94,6 +119,240 @@ document.addEventListener('DOMContentLoaded', () => {
         date.setDate(date.getDate() + Number(days || 0));
         return date;
     };
+
+    const setAuthMessage = (message = '', tone = 'neutral') => {
+        if (!portalAuthMessage) return;
+        const content = (message || '').trim();
+        if (!content) {
+            portalAuthMessage.textContent = '';
+            if (portalAuthMessage.dataset.tone) {
+                delete portalAuthMessage.dataset.tone;
+            }
+            toggleHidden(portalAuthMessage, true);
+            return;
+        }
+        portalAuthMessage.textContent = content;
+        portalAuthMessage.dataset.tone = tone;
+        toggleHidden(portalAuthMessage, false);
+    };
+
+    let activeAuthView = 'signup';
+
+    const setAuthView = (view = 'signup') => {
+        activeAuthView = view;
+        const showSignup = view === 'signup';
+        toggleHidden(signupCard, !showSignup);
+        toggleHidden(loginCard, showSignup);
+        toggleHidden(signupForm, !showSignup);
+        toggleHidden(loginForm, showSignup);
+        authToggleButtons.forEach(button => {
+            const targetView = button.dataset.authView || 'signup';
+            const isActive = targetView === view;
+            button.classList.toggle('is-active', isActive);
+            button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+        if (portalAuthWrapper) {
+            portalAuthWrapper.dataset.view = view;
+        }
+    };
+
+    const updateAuthCardState = (account) => {
+        if (!portalAuthWrapper) return;
+        const isAuthenticated = Boolean(account);
+        portalAuthWrapper.dataset.state = isAuthenticated ? 'authenticated' : 'form';
+        if (isAuthenticated) {
+            portalAuthWrapper.dataset.view = 'success';
+        } else {
+            portalAuthWrapper.dataset.view = activeAuthView;
+        }
+        toggleHidden(portalAuthForms, isAuthenticated);
+        toggleHidden(portalAuthSuccess, !isAuthenticated);
+        if (portalAuthResidentName) {
+            portalAuthResidentName.textContent = account?.name || 'Codex Resident';
+        }
+        if (portalAuthResidentEmail) {
+            portalAuthResidentEmail.textContent = account?.email || '—';
+        }
+        authToggleButtons.forEach(button => {
+            button.disabled = isAuthenticated;
+        });
+        if (portalAuthToggle) {
+            portalAuthToggle.classList.toggle('is-disabled', isAuthenticated);
+        }
+        if (!isAuthenticated) {
+            setAuthView(activeAuthView);
+        }
+    };
+
+    const setFormLoadingState = (form, isLoading) => {
+        if (!form) return;
+        const controls = form.querySelectorAll('input, button, select, textarea');
+        controls.forEach(control => {
+            if (isLoading) {
+                control.dataset.originalDisabled = control.disabled ? 'true' : 'false';
+                control.disabled = true;
+            } else if (control.dataset.originalDisabled === 'true') {
+                control.disabled = true;
+                delete control.dataset.originalDisabled;
+            } else {
+                control.disabled = false;
+                if (control.dataset.originalDisabled) {
+                    delete control.dataset.originalDisabled;
+                }
+            }
+        });
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+            if (isLoading) {
+                if (!submitButton.dataset.originalLabel) {
+                    submitButton.dataset.originalLabel = submitButton.textContent;
+                }
+                submitButton.classList.add('is-loading');
+                submitButton.textContent = submitButton.dataset.loadingLabel || 'One moment…';
+            } else {
+                submitButton.classList.remove('is-loading');
+                if (submitButton.dataset.originalLabel) {
+                    submitButton.textContent = submitButton.dataset.originalLabel;
+                    delete submitButton.dataset.originalLabel;
+                }
+            }
+        }
+    };
+
+    const requestJson = async (endpoint, options = {}) => {
+        let response;
+        try {
+            response = await fetch(endpoint, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...(options.headers || {})
+                },
+                credentials: 'same-origin',
+                cache: 'no-store',
+                ...options
+            });
+        } catch (networkError) {
+            const error = new Error('We could not reach the resident portal services. Check your connection and try again.');
+            error.cause = networkError;
+            throw error;
+        }
+
+        const isJson = (response.headers.get('content-type') || '').includes('application/json');
+        const payload = isJson ? await response.json() : {};
+        if (!response.ok) {
+            const message = payload?.message || `Request failed with status ${response.status}`;
+            const error = new Error(message);
+            error.status = response.status;
+            error.payload = payload;
+            throw error;
+        }
+        return payload;
+    };
+
+    authToggleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetView = button.dataset.authView || 'signup';
+            setAuthMessage('');
+            setAuthView(targetView);
+        });
+    });
+
+    signupForm && signupForm.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (!signupForm) return;
+        const formData = new FormData(signupForm);
+        const password = (formData.get('password') || '').toString().trim();
+        const confirm = (formData.get('confirmPassword') || '').toString().trim();
+        if (password.length < 8) {
+            setAuthMessage('Passwords must be at least 8 characters.', 'error');
+            return;
+        }
+        if (password !== confirm) {
+            setAuthMessage('Passwords do not match. Please try again.', 'error');
+            return;
+        }
+
+        const payload = {
+            firstName: (formData.get('firstName') || '').toString().trim(),
+            lastName: (formData.get('lastName') || '').toString().trim(),
+            email: (formData.get('email') || '').toString().trim(),
+            phone: (formData.get('phone') || '').toString().trim(),
+            unit: (formData.get('unit') || '').toString().trim(),
+            password
+        };
+
+        if (!payload.firstName || !payload.lastName || !payload.email) {
+            setAuthMessage('Please complete all required fields to continue.', 'error');
+            return;
+        }
+
+        try {
+            setAuthMessage('');
+            setFormLoadingState(signupForm, true);
+            const data = await requestJson(`${API_BASE_URL}/auth/signup`, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+            if (data?.user) {
+                saveAccount(data.user);
+                syncResidentPortal();
+                signupForm.reset();
+                loginForm && loginForm.reset();
+                setAuthMessage(data.message || 'Your Codex resident account is ready.', 'success');
+            }
+        } catch (error) {
+            setAuthMessage(error.message || 'Unable to create your account right now.', 'error');
+        } finally {
+            setFormLoadingState(signupForm, false);
+        }
+    });
+
+    loginForm && loginForm.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (!loginForm) return;
+        const formData = new FormData(loginForm);
+        const payload = {
+            email: (formData.get('email') || '').toString().trim(),
+            password: (formData.get('password') || '').toString()
+        };
+
+        if (!payload.email || !payload.password) {
+            setAuthMessage('Enter your email and password to continue.', 'error');
+            return;
+        }
+
+        try {
+            setAuthMessage('');
+            setFormLoadingState(loginForm, true);
+            const data = await requestJson(`${API_BASE_URL}/auth/login`, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+            if (data?.user) {
+                saveAccount(data.user);
+                syncResidentPortal();
+                loginForm.reset();
+                setAuthMessage(data.message || 'Welcome back to Codex Residences.', 'success');
+            }
+        } catch (error) {
+            if (error.status === 401) {
+                setAuthMessage('We could not find that email and password combination.', 'error');
+            } else {
+                setAuthMessage(error.message || 'Unable to sign you in right now.', 'error');
+            }
+        } finally {
+            setFormLoadingState(loginForm, false);
+        }
+    });
+
+    portalAuthSignOut && portalAuthSignOut.addEventListener('click', () => {
+        localStorage.removeItem('codexResidentAccount');
+        setAuthView('login');
+        setAuthMessage('You have signed out of your Codex account.', 'neutral');
+        syncResidentPortal();
+    });
 
     const decorateAltInput = (picker, type, placeholder = '') => {
         if (!picker || !picker.altInput) return;
@@ -1093,6 +1352,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const syncResidentPortal = () => {
         const account = loadAccount();
+        updateAuthCardState(account);
+
         if (!accountStatus || !accountDetails || !accountName || !accountEmail) {
             return;
         }
@@ -1128,6 +1389,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     accountReset && accountReset.addEventListener('click', () => {
         localStorage.removeItem('codexResidentAccount');
+        setAuthView('login');
+        setAuthMessage('You have signed out of your Codex account.', 'neutral');
         syncResidentPortal();
     });
 
